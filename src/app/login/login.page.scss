@@ -1,0 +1,45 @@
+.logo{
+    width: 30vw;
+    margin-top: 16vw;
+}
+.login-btn{
+    color: white;
+    --background: green;
+    width: 80%;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align inputs in center */
+    width: 100%;
+    height: 100%;
+}
+.form-input {
+    width: 88%; /* Adjust input width */
+    --mat-sys-primary:green;
+}
+.login-btn{
+    width: 88%;
+    height: 6%;
+}
+.title1{
+    color: green;
+    font-weight: 800;
+    font-size: larger;
+    margin: 0px;
+    margin-top: 10%;
+}
+.title2{
+    color: black;
+    font-weight: 500;
+    margin: 0px;
+    margin-top: 2%;
+    margin-bottom: 10%;
+}
+.mat-icon-button {
+  padding: 0;
+  margin-right: 8px;  /* Adjust the spacing */
+}
+:host {
+    --color-checked: green;
+}

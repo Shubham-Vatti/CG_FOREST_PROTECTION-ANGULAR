@@ -1,0 +1,34 @@
+<ion-content [fullscreen]="true">
+  <div class="form">
+    <div class="logo-div">
+      <ion-img
+        src="../../../assets/icon/Logo.png"
+        class="logo"
+        alt="App Logo"
+      />
+    </div>
+    <p class="title1">Forest & Climate Change Department</p>
+    <p class="title2">Government of Chhattisgarh</p>
+    <ion-input
+      label="Mobile no"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. 9876543210"
+      type="number"
+      style="width: 88%; margin-bottom: 6%; --highlight-color-focused: green"
+    />
+    <ion-input
+      label="Password"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Enter password"
+      style="width: 88%; margin-bottom: 6%; --highlight-color-focused: green"
+    />
+    <ion-radio-group value="English" style="margin-bottom: 6%">
+      <ion-radio value="Hindi" labelPlacement="end">Hindi</ion-radio> &nbsp;
+      &nbsp; &nbsp; &nbsp;
+      <ion-radio value="English" labelPlacement="end">English</ion-radio>
+    </ion-radio-group>
+    <ion-button class="login-btn" (click)="on_login()">Login</ion-button>
+  </div>
+</ion-content>
