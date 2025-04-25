@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { MenuComponent } from './components/menu/menu.component';
 
 export const routes: Routes = [
   {
@@ -11,15 +12,28 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-  },
-  // {
-  //   path: 'por-form',
-  //   loadComponent: () => import('./por-form/por-form.page').then( m => m.PorFormPage)
-  // },
-  {
     path: 'menu',
-    loadComponent: () => import('./menu/menu.page').then((m) => m.MenuPage),
+    component: MenuComponent,
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('../app/pages/dashboard/dashboard.page').then(
+            (m) => m.DashboardPage
+          ),
+      },
+      {
+        path: 'por-form',
+        loadComponent: () =>
+          import('../app/pages/por-form/por-form.page').then(
+            (m) => m.PorFormPage
+          ),
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
   },
 ];

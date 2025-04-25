@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>POR</ion-title>
+    <ion-img
+      src="assets/icon/Logo.png"
+      slot="end"
+      style="width: 10%; height: 10%; margin-right: 1%"
+    />
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form action="">
+    <p class="title-txt">Date: - {{currentDate}}</p>
+    <ion-input
+      label="Name of accused"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="Father's name"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="Caste"
+      labelPlacement="floating"
+      fill="outline"
+      class="por-form-input"
+      placeholder="Ex. Sample"
+    />
+    <ion-input
+      label="Address"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="Type of crime and legal action's"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="Place where the crime occured"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="Date of crime"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="Detail's of seized goods and action taken"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="Name of witness"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <p class="title-txt" style="width: 92%; text-align: center">
+      Note :- This report must be sent to the senior officer within 48 hr of
+      crime being detected
+    </p>
+    <ion-button style="width: 92%; padding-bottom: 2%">Submit</ion-button>
+  </form>
+</ion-content>

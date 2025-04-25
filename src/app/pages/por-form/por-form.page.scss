@@ -1,0 +1,16 @@
+.title-txt{
+    font-weight: 600;
+    font-size:medium;
+    text-transform: capitalize;
+}
+
+.por-form-input{
+    width: 92%;
+    margin-bottom: 6%;
+    --highlight-color-focused: rgb(0, 0, 0);
+}
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers child elements horizontally */
+}

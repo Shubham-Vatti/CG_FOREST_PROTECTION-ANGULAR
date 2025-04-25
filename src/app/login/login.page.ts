@@ -13,6 +13,7 @@ import {
   IonButton,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -31,15 +32,32 @@ import { Router } from '@angular/router';
     IonImg,
     IonRadio,
     IonRadioGroup,
+    TranslateModule,
   ],
 })
 export class LoginPage implements OnInit {
-  constructor(private router: Router) {}
+  currentLang = 'en';
+  constructor(private router: Router, private translate: TranslateService) {
+    translate.addLangs(['en', 'hi']);
+    translate.setDefaultLang('en');
+
+    const browserLang = translate.getBrowserLang();
+    this.currentLang = browserLang ?? 'en';
+    translate.use(this.currentLang);
+  }
 
   ngOnInit() {}
 
+  // constructor() {
+  // }
+
+  changeLanguage(lang: string) {
+    this.currentLang = lang;
+    this.translate.use(lang);
+  }
+
   on_login() {
     // console.log('hello');
-    this.router.navigate(['/home']);
+    this.router.navigate(['/menu/dashboard']);
   }
 }

@@ -1,0 +1,54 @@
+{
+  "auth": {
+    "Title1": "Forest & Climate Change Department",
+    "Title2": "Government of Chhattisgarh",
+    "LoginBtnTxt": "Login",
+    "PasswordTxt": "Password",
+    "UidTxt": "Mobile number",
+    "UserIdAlert": "Please Fill the User name",
+    "UserPasAlert": "Please Fill the Password",
+    "AlertTxt": "Alert",
+    "Ok": "Ok"
+  },
+  "appbar": {
+    "Title-Dashboard": "Dashboard",
+    "Title-POR": "POR"
+  },
+  "dashboard": {
+    "reporttxt": "Report",
+    "completedtxt": "Completed",
+    "pendingtxt": "Pending",
+    "shortdescribe": "The Chhattisgarh Forest and Climate Change Department focuses on conservation, biodiversity, sustainability, and climate action.",
+    "totalnumbertext": "Total number of POR (complaints) submitted by the Forest Beat",
+    "completedtnumberxt": "Total number of POR (complaints) reviewed and completed by the Forest Higher Officer.",
+    "pendingnumbertxt": "Total number of POR (complaints) pending review."
+  },
+  "PorFormScreen": {
+    "DateTxt": "Date :- ",
+    "AccussedName": "Name of the accused",
+    "FathersName": "Father's name",
+    "CasteTxt": "Caste",
+    "AddressTxt": "Address",
+    "TypeOfCrimeAndLeagleAcctionTXT": "Type of crime and legal action's",
+    "CrimePlaceTxt": "Place where the crime occured",
+    "DateOCrime": "Date of crime",
+    "DetailOfSeizedNdActions": "Detail's of seized goods and action taken",
+    "NameOWitness": "Name of witness",
+    "NoteTxt": "Note :- This report must be sent to the senior officer within 48 hr of crime being detected",
+    "SubmitTxt": "Submit",
+    "monthNames": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ]
+  }
+}
