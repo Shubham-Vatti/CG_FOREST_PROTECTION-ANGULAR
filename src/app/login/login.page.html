@@ -1,44 +1,65 @@
-<ion-content [fullscreen]="true">
-  <div class="form">
-    <div class="logo-div">
-      <ion-img
-        src="../../../assets/icon/Logo.png"
-        class="logo"
-        alt="App Logo"
-      />
-    </div>
-    <p class="title1">{{'auth.Title1'|translate}}</p>
-    <p class="title2">{{'auth.Title2'|translate}}</p>
-    <ion-input
-      label="{{'auth.UidTxt'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      type="number"
-      style="width: 88%; margin-bottom: 6%; --highlight-color-focused: green"
-    />
-    <ion-input
-      label="{{'auth.PasswordTxt'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      style="width: 88%; margin-bottom: 6%; --highlight-color-focused: green"
-    />
-    <ion-radio-group value="English" style="margin-bottom: 6%">
-      <ion-radio
-        value="Hindi"
-        labelPlacement="end"
-        (click)="changeLanguage('hi')"
-        >Hindi</ion-radio
-      >
-      &nbsp; &nbsp; &nbsp; &nbsp;
-      <ion-radio
-        value="English"
-        labelPlacement="end"
-        (click)="changeLanguage('en')"
-        >English</ion-radio
-      >
-    </ion-radio-group>
-    <ion-button class="login-btn" (click)="on_login()"
-      >{{'auth.LoginBtnTxt'|translate}}</ion-button
+<ion-content [fullscreen]="true" class="ion-text-center">
+  <ion-grid class="full-height">
+    <ion-row
+      class="ion-align-items-center ion-justify-content-center full-height"
     >
-  </div>
+      <ion-col size="12" class="content-col">
+        <!-- Logo -->
+        <ion-img
+          src="../../../assets/icon/Logo.png"
+          class="logo"
+          alt="App Logo"
+        ></ion-img>
+
+        <!-- Titles -->
+        <p class="title1">{{ 'auth.Title1' | translate }}</p>
+        <p class="title2">{{ 'auth.Title2' | translate }}</p>
+
+        <!-- UID Input -->
+        <ion-input
+          label="{{ 'auth.UidTxt' | translate }}"
+          labelPlacement="floating"
+          fill="outline"
+          type="number"
+          class="input-field"
+        >
+        </ion-input>
+
+        <!-- Password Input -->
+        <ion-input
+          label="{{ 'auth.PasswordTxt' | translate }}"
+          [attr.lang]="currentLang"
+          labelPlacement="floating"
+          fill="outline"
+          type="password"
+          class="input-field"
+        >
+        </ion-input>
+
+        <!-- Language Switch -->
+        <ion-radio-group value="English" class="language-group">
+          <ion-radio
+            value="Hindi"
+            labelPlacement="end"
+            (click)="changeLanguage('hi')"
+          >
+            हिन्दी
+          </ion-radio>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <ion-radio
+            value="English"
+            labelPlacement="end"
+            (click)="changeLanguage('en')"
+          >
+            English
+          </ion-radio>
+        </ion-radio-group>
+
+        <!-- Login Button -->
+        <ion-button expand="block" class="login-btn" (click)="on_login()">
+          {{ 'auth.LoginBtnTxt' | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

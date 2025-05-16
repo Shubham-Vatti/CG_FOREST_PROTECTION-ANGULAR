@@ -14,16 +14,22 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonIcon,
+  IonGrid,
+  IonCol,
+  IonRow,
 } from '@ionic/angular/standalone';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
   standalone: true,
   imports: [
+    IonIcon,
     IonContent,
     IonHeader,
     IonTitle,
@@ -39,14 +45,22 @@ import { BaseChartDirective } from 'ng2-charts';
     IonCardHeader,
     IonCardSubtitle,
     IonCardTitle,
+    TranslateModule,
+    IonGrid,
+    IonCol,
+    IonRow,
   ],
 })
 export class DashboardPage implements OnInit {
+  constructor(private translate: TranslateService) {}
   public doughnutChartType: ChartType = 'doughnut';
   Completednumber = 20;
   Pendingnumber = 10;
   public doughnutChartData = {
-    labels: ['Completed', 'Pending'],
+    labels: [
+      this.translate.instant('dashboard.completedtxt'),
+      this.translate.instant('dashboard.pendingtxt'),
+    ],
     datasets: [
       {
         data: [this.Completednumber, this.Pendingnumber],
@@ -68,7 +82,6 @@ export class DashboardPage implements OnInit {
       },
     },
   };
-  constructor() {}
 
   ngOnInit() {}
 }

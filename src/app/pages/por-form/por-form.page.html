@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>POR</ion-title>
+    <ion-title>{{'appbar.Title-POR'|translate}}</ion-title>
     <ion-img
       src="assets/icon/Logo.png"
       slot="end"
@@ -14,74 +14,110 @@
 
 <ion-content [fullscreen]="true">
   <form action="">
-    <p class="title-txt">Date: - {{currentDate}}</p>
-    <ion-input
-      label="Name of accused"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="Father's name"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="Caste"
-      labelPlacement="floating"
-      fill="outline"
-      class="por-form-input"
-      placeholder="Ex. Sample"
-    />
-    <ion-input
-      label="Address"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="Type of crime and legal action's"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="Place where the crime occured"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="Date of crime"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="Detail's of seized goods and action taken"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="Name of witness"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <p class="title-txt" style="width: 92%; text-align: center">
-      Note :- This report must be sent to the senior officer within 48 hr of
-      crime being detected
+    <p class="title-txt">
+      {{"PorFormScreen.DateTxt"|translate}}: - {{currentDate}}
     </p>
-    <ion-button style="width: 92%; padding-bottom: 2%">Submit</ion-button>
+    <ion-input
+      label="{{'PorFormScreen.AccussedName'|translate}}"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="{{'PorFormScreen.FathersName'|translate}}"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="{{'PorFormScreen.CasteTxt'|translate}}"
+      labelPlacement="floating"
+      fill="outline"
+      class="por-form-input"
+      placeholder="Ex. Sample"
+    />
+    <ion-input
+      label="{{'PorFormScreen.AddressTxt'|translate}}"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="{{'PorFormScreen.TypeOfCrimeAndLeagleAcctionTXT'|translate}}"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="{{'PorFormScreen.CrimePlaceTxt'|translate}}"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="{{'PorFormScreen.DateOCrime'|translate}}"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="{{'PorFormScreen.DetailOfSeizedNdActions'|translate}}"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+    <ion-input
+      label="{{'PorFormScreen.NameOWitness'|translate}}"
+      labelPlacement="floating"
+      fill="outline"
+      placeholder="Ex. Sample"
+      class="por-form-input"
+    />
+
+    <ion-input
+      label="Select Item"
+      type="text"
+      labelPlacement="floating"
+      fill="outline"
+      [formControl]="searchControl"
+      (ionInput)="onSearch()"
+      [value]="selectedItem"
+      class="por-form-input"
+      clearInput
+    />
+
+    <ion-list
+      *ngIf="filteredItems.length > 0 && searchControl.value"
+      style="
+        width: 92%;
+        --highlight-color-focused: rgb(0, 0, 0);
+        background-color: red;
+        margin: 0%;
+        padding: 0%;
+      "
+    >
+      <ion-item
+        style="background-color: red"
+        button
+        *ngFor="let item of filteredItems"
+        (click)="selectItem(item)"
+      >
+        {{ item }}
+      </ion-item>
+    </ion-list>
+
+    <p class="title-txt" style="width: 92%; text-align: center">
+      {{'PorFormScreen.NoteTxt'|translate}}
+    </p>
+    <ion-button style="width: 92%; padding-bottom: 2%"
+      >{{'PorFormScreen.SubmitTxt'|translate}}</ion-button
+    >
   </form>
 </ion-content>

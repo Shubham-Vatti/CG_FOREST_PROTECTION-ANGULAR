@@ -3,106 +3,107 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Dashboard</ion-title>
+    <ion-title>{{ 'appbar.Title-Dashboard' | translate }}</ion-title>
     <ion-img
       src="assets/icon/Logo.png"
       slot="end"
-      style="width: 10%; height: 10%; margin-right: 1%"
+      style="width: 40px; height: 40px; margin-right: 1rem"
     />
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <p class="title-txt" style="margin-left: 5%; margin-top: 10%">Report</p>
-  <div>
-    <canvas
-      baseChart
-      [data]="doughnutChartData"
-      [type]="doughnutChartType"
-      [options]="doughnutChartOptions"
-      [legend]="true"
-      style="height: 300px"
-    ></canvas>
-  </div>
-  <div style="width: 100%">
-    <p class="desc-txt" style="text-align: center">
-      The Chhattisgarh Forest and Climate Change Department focuses on
-      conservation, biodiversity, sustainability, and climate action.
-    </p>
-    <div>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title style="font-size: xx-large"
-            >{{Completednumber+Pendingnumber}}</ion-card-title
-          >
-          <ion-card-subtitle>Total number of por</ion-card-subtitle>
-        </ion-card-header>
+  <!-- Title -->
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h2 class="title-txt" style="margin: 5% 0 2% 5%">
+          {{ 'dashboard.reporttxt' | translate }}
+        </h2>
+      </ion-col>
+    </ion-row>
 
-        <ion-card-content
-          >Total number of POR (complaints) submitted by the Forest Beat
-        </ion-card-content>
-      </ion-card>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title style="font-size: xx-large"
-            >{{Completednumber}}</ion-card-title
-          >
-          <ion-card-subtitle>Total number of completed por</ion-card-subtitle>
-        </ion-card-header>
+    <!-- Doughnut Chart -->
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" sizeMd="6">
+        <canvas
+          baseChart
+          [data]="doughnutChartData"
+          [type]="doughnutChartType"
+          [options]="doughnutChartOptions"
+          [legend]="true"
+          style="height: 300px"
+        ></canvas>
+      </ion-col>
+    </ion-row>
 
-        <ion-card-content
-          >Total number of POR (complaints) reviewed and completed by the Forest
-          Higher Officer.
-        </ion-card-content>
-      </ion-card>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title style="font-size: xx-large"
-            >{{Pendingnumber}}</ion-card-title
-          >
-          <ion-card-subtitle>Total number of pending por</ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content
-          >Total number of POR (complaints) pending review.
-        </ion-card-content>
-      </ion-card>
-      <!-- <div style="width: 100%; background-color: red">
-        <p
-          class="title-txt"
-          style="font-size: 40px; margin-bottom: 0; margin-top: 0"
-        >
-          {{Completednumber+Pendingnumber}}
+    <!-- Description -->
+    <ion-row>
+      <ion-col size="12">
+        <p class="desc-txt ion-text-center" style="margin-bottom: 2%">
+          {{ 'dashboard.shortdescribe' | translate }}
         </p>
-        <p class="desc-txt" style="width: 88%">
-          Total number of POR (complaints) submitted by the Forest Beat
-        </p>
-      </div>
-      <div style="display: flex">
-        <div style="width: 88%">
-          <p
-            class="title-txt"
-            style="font-size: 40px; margin-bottom: 0; margin-top: 0"
-          >
-            {{Completednumber}}
-          </p>
-          <p class="desc-txt">
-            Total number of POR (complaints) reviewed and completed by the
-            Forest Higher Officer.
-          </p>
-        </div>
-        <div style="width: 88%">
-          <p
-            class="title-txt"
-            style="font-size: 40px; margin-bottom: 0; margin-top: 0"
-          >
-            {{Pendingnumber}}
-          </p>
-          <p class="desc-txt">
-            Total number of POR (complaints) pending review.
-          </p>
-        </div>
-      </div> -->
-    </div>
-  </div>
+      </ion-col>
+    </ion-row>
+
+    <!-- Cards -->
+    <ion-row>
+      <!-- Total Card -->
+      <ion-col size="12" sizeMd="4">
+        <ion-card class="card-total">
+          <ion-card-header>
+            <ion-icon
+              name="analytics-outline"
+              class="card-icon"
+              color="primary"
+            ></ion-icon>
+            <ion-card-title>
+              {{ Completednumber + Pendingnumber }}
+            </ion-card-title>
+            <ion-card-subtitle>
+              {{ 'dashboard.short-totalnumbertext' | translate }}
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            {{ 'dashboard.totalnumbertext' | translate }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Completed Card -->
+      <ion-col size="12" sizeMd="4">
+        <ion-card class="card-completed">
+          <ion-card-header>
+            <ion-icon
+              name="checkmark-done-circle-outline"
+              class="card-icon"
+            ></ion-icon>
+            <ion-card-title>{{ Completednumber }}</ion-card-title>
+            <ion-card-subtitle>
+              {{ 'dashboard.short-completedtnumberxt' | translate }}
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            {{ 'dashboard.completedtnumberxt' | translate }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Pending Card -->
+      <ion-col size="12" sizeMd="4">
+        <ion-card class="card-pending">
+          <ion-card-header>
+            <ion-icon name="time-outline" class="card-icon"></ion-icon>
+            <ion-card-title>{{ Pendingnumber }}</ion-card-title>
+            <ion-card-subtitle>
+              {{ 'dashboard.short-pendingnumbertxt' | translate }}
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            {{ 'dashboard.pendingnumbertxt' | translate }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

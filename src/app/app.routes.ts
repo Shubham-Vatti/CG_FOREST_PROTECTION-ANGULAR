@@ -3,12 +3,17 @@ import { MenuComponent } from './components/menu/menu.component';
 
 export const routes: Routes = [
   {
+    path: 'splash',
+    loadComponent: () =>
+      import('./splash/splash.page').then((m) => m.SplashPage),
+  },
+  {
     path: 'login',
     loadComponent: () => import('./login/login.page').then((m) => m.LoginPage),
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'splash',
     pathMatch: 'full',
   },
   {
@@ -35,5 +40,10 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: 'profile-data',
+    loadComponent: () =>
+      import('./profile-data/profile-data.page').then((m) => m.ProfileDataPage),
   },
 ];

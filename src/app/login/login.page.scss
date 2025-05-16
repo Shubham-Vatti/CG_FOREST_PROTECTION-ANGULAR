@@ -1,11 +1,8 @@
 .logo{
     width: 30vw;
-    margin-top: 16vw;
 }
 .login-btn{
     color: white;
-    --background: green;
-    width: 80%;
 }
 .form {
     display: flex;
@@ -23,23 +20,49 @@
     height: 6%;
 }
 .title1{
-    color: green;
+    color: rgb(0, 128, 0);
     font-weight: 800;
     font-size: larger;
     margin: 0px;
-    margin-top: 10%;
+
 }
 .title2{
     color: black;
     font-weight: 500;
     margin: 0px;
     margin-top: 2%;
-    margin-bottom: 10%;
-}
-.mat-icon-button {
-  padding: 0;
-  margin-right: 8px;  /* Adjust the spacing */
+    margin-bottom: 4%;
 }
 :host {
     --color-checked: green;
+}
+.full-height {
+  height: 100%;
+}
+
+.content-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+
+.input-field {
+  width: 88%;
+  margin-bottom: 6%;
+  --highlight-color-focused: green;
+  text-align: start;
+}
+
+.language-group {
+  margin-bottom: 6%;
+}
+
+.login-btn {
+  width: 88%;
 }

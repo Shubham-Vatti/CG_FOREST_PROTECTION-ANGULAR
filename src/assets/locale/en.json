@@ -19,9 +19,12 @@
     "completedtxt": "Completed",
     "pendingtxt": "Pending",
     "shortdescribe": "The Chhattisgarh Forest and Climate Change Department focuses on conservation, biodiversity, sustainability, and climate action.",
+    "short-totalnumbertext":"Total number of por",
     "totalnumbertext": "Total number of POR (complaints) submitted by the Forest Beat",
     "completedtnumberxt": "Total number of POR (complaints) reviewed and completed by the Forest Higher Officer.",
-    "pendingnumbertxt": "Total number of POR (complaints) pending review."
+    "short-completedtnumberxt": "Total number of completed por",
+    "pendingnumbertxt": "Total number of POR (complaints) pending review.",
+    "short-pendingnumbertxt": "Total number of pending por"
   },
   "PorFormScreen": {
     "DateTxt": "Date :- ",

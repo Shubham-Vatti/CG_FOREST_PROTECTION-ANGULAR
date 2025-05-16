@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   IonContent,
   IonHeader,
@@ -11,7 +11,14 @@ import {
   IonMenuButton,
   IonImg,
   IonButton,
+  IonDatetime,
+  IonModal,
+  IonItem,
+  IonLabel,
+  IonList,
 } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-por-form',
@@ -19,6 +26,9 @@ import {
   styleUrls: ['./por-form.page.scss'],
   standalone: true,
   imports: [
+    IonList,
+    IonLabel,
+    IonItem,
     IonInput,
     IonContent,
     IonHeader,
@@ -30,10 +40,16 @@ import {
     IonMenuButton,
     IonImg,
     IonButton,
+    TranslateModule,
+    IonDatetime,
+    IonModal,
+    ReactiveFormsModule,
   ],
 })
 export class PorFormPage implements OnInit {
   currentDate: string;
+  selectedDate: string = '';
+  showDatepicker = false;
 
   constructor() {
     const today = new Date();
@@ -47,5 +63,36 @@ export class PorFormPage implements OnInit {
       .padStart(2, '0')}/${year}`;
   }
 
-  ngOnInit() {}
+  onDateSelected(event: any) {
+    this.selectedDate = event.detail.value;
+    this.showDatepicker = false;
+  }
+
+  openDatepicker() {
+    this.showDatepicker = true;
+  }
+
+  searchControl = new FormControl('');
+  items: string[] = ['Apple', 'Banana', 'Cherry', 'Mango', 'Pineapple'];
+  filteredItems: string[] = [];
+  selectedItem: string = '';
+
+  ngOnInit() {
+    this.searchControl.valueChanges.pipe(debounceTime(200)).subscribe(() => {
+      this.onSearch();
+    });
+  }
+
+  onSearch() {
+    const query = this.searchControl.value?.toLowerCase() || '';
+    this.filteredItems = this.items.filter((item) =>
+      item.toLowerCase().includes(query)
+    );
+  }
+
+  selectItem(item: string) {
+    this.selectedItem = item;
+    this.searchControl.setValue(item, { emitEvent: false });
+    this.filteredItems = [];
+  }
 }

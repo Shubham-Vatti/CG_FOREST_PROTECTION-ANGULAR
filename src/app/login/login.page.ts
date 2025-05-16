@@ -11,9 +11,13 @@ import {
   IonRadioGroup,
   IonRadio,
   IonButton,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Platform } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-login',
@@ -33,11 +37,20 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     IonRadio,
     IonRadioGroup,
     TranslateModule,
+    IonGrid,
+    IonRow,
+    IonCol,
   ],
 })
 export class LoginPage implements OnInit {
-  currentLang = 'en';
-  constructor(private router: Router, private translate: TranslateService) {
+  currentLang: string;
+  constructor(
+    private router: Router,
+    private translate: TranslateService,
+    private platform: Platform
+  ) {
+    this.currentLang = this.translate.currentLang;
+    console.log(this.currentLang);
     translate.addLangs(['en', 'hi']);
     translate.setDefaultLang('en');
 
@@ -46,6 +59,7 @@ export class LoginPage implements OnInit {
     translate.use(this.currentLang);
   }
 
+  // platformdata = this.platform.;
   ngOnInit() {}
 
   // constructor() {

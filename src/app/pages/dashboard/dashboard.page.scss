@@ -14,4 +14,51 @@
     font-weight: 500;
   }
 
-  
+  .dashboard-cards {
+  display: flex;
+  flex-direction: column;
+  // gap: 20px;
+  padding: 0 2%;
+}
+
+ion-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  text-align: center;
+}
+
+.card-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.card-total {
+  // background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  background: linear-gradient(135deg, lightgreen, green);
+}
+
+.card-completed {
+  background: linear-gradient(135deg, yellowgreen, green);
+}
+
+.card-pending {
+  background: linear-gradient(135deg, lightgreen,teal);
+}
+
+ion-card-title {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+ion-card-subtitle {
+  font-size: 16px;
+  color: white;
+}
+
+ion-card-content {
+  font-size: 14px;
+  opacity: 0.85;
+  padding: 10px 8px;
+}
