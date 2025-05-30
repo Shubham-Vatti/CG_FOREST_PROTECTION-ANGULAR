@@ -1,9 +1,9 @@
 <ion-content [fullscreen]="true" class="ion-text-center">
   <ion-grid class="full-height">
-    <ion-row
+    <ion-row 
       class="ion-align-items-center ion-justify-content-center full-height"
     >
-      <ion-col size="12" class="content-col">
+      <ion-col size-lg="4" size-sm="12" class="content-col">
         <!-- Logo -->
         <ion-img
           src="../../../assets/icon/Logo.png"
@@ -22,6 +22,7 @@
           fill="outline"
           type="number"
           class="input-field"
+          [(ngModel)]="mobile_no"
         >
         </ion-input>
 
@@ -33,6 +34,7 @@
           fill="outline"
           type="password"
           class="input-field"
+          [(ngModel)]="password"
         >
         </ion-input>
 

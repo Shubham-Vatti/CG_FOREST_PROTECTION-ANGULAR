@@ -13,11 +13,14 @@
 }
 .form-input {
     width: 88%; /* Adjust input width */
-    --mat-sys-primary:green;
+    --mat-sys-primary:rgb(0, 0, 0);
 }
 .login-btn{
     width: 88%;
     height: 6%;
+}
+:root{
+  --ion-color-success:green
 }
 .title1{
     color: rgb(0, 128, 0);

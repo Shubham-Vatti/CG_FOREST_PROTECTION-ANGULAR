@@ -18,6 +18,7 @@ import {
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Platform } from '@ionic/angular/standalone';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-login',
@@ -44,10 +45,13 @@ import { Platform } from '@ionic/angular/standalone';
 })
 export class LoginPage implements OnInit {
   currentLang: string;
+  mobile_no:string = '';
+  password: string = '';
   constructor(
     private router: Router,
     private translate: TranslateService,
-    private platform: Platform
+    private platform: Platform,
+    private apiService: ApiService
   ) {
     this.currentLang = this.translate.currentLang;
     console.log(this.currentLang);
@@ -71,7 +75,25 @@ export class LoginPage implements OnInit {
   }
 
   on_login() {
-    // console.log('hello');
-    this.router.navigate(['/menu/dashboard']);
+    if(this.mobile_no)
+    {
+      if(this.password)
+      {
+    let data={
+    mobile:this.mobile_no,
+    password:this.password
+    }
+    this.apiService.User_Login(data).subscribe((resp) => {
+            console.log('--response--',resp);
+        });
+      }
+      else{
+        alert("Please enter password");
+      }
+    // this.router.navigate(['/menu/dashboard']);
   }
+  else{
+    alert("Please enter mobile number");
+  }
+    }
 }
