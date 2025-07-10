@@ -1,11 +1,36 @@
 <ion-app>
   <ion-menu contentId="main-content">
-    <ion-header class="menu-header"> </ion-header>
+    <ion-header class="ion-header-class-for-menu">
+      <!-- <div class="bg"></div> -->
+
+      <ion-item lines="none" class="center-header-item">
+        <ion-avatar slot="start">
+          <img src="../../../assets/icon/Logo.png" />
+        </ion-avatar>
+        <ion-label class="ion-label">
+          <!-- aaa -->
+          {{ "auth.Title1" | translate }}
+          <p class="p">
+            <ion-text>
+              {{ "auth.Title2" | translate }}
+
+              <!-- ({{ getTranslation('state_name')}}) -->
+            </ion-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-header>
 
     <ion-content>
       <ion-list>
         <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-          <ion-item (click)="onMenuClick(p.url)" routerDirection="root">
+          <ion-item
+            (click)="onMenuClick(p.url)"
+            routerDirection="root"
+            class="pressable-item"
+            button
+            style="--background-hover: green; --background-activated: #e0e0e0"
+          >
             <ion-icon [name]="p.icon" slot="start"></ion-icon>
             <ion-label>{{ p.title }}</ion-label>
           </ion-item>

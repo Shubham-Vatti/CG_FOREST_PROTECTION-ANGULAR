@@ -4,17 +4,29 @@
     "Title2": "छत्तीसगढ़ सरकार",
     "LoginBtnTxt": "लॉगिन",
     "PasswordTxt": "पासवर्ड",
-    "UidTxt": "मोबाइल नंबर",
+    "UidTxt": "उपयोगकर्ता नाम",
     "UserIdAlert": "कृपया उपयोगकर्ता नाम भरें",
     "UserPasAlert": "कृपया पासवर्ड भरें",
     "AlertTxt": "चेतावनी",
-    "Ok": "ठीक है"
+    "Ok": "ठीक है",
+    "profileDetails":"प्रोफ़ाइल विवरण भरें",
+    "loadertxt":"लॉगिंग इन...",
+    "alertusername":"कृपया उपयोगकर्ता नाम दर्ज करें",
+    "alertpassword":"कृपया पासवर्ड दर्ज करें"
+  },
+  "profile-setup":{
+    "s-circle":"वृत्त का चयन करें",
+    "s-division":"वन मंडल का चयन करें",
+    "s-subdivision":"उप वन मंडल का चयन करें",
+    "s-range":"परिछेत्र का चयन करें",
+    "s-beat":"बीट का चयन करें"
   },
   "appbar": {
     "Title-Dashboard": "डैशबोर्ड",
     "Title-POR": "पोर"
   },
   "dashboard": {
+    "norecordfound":"कोई रिकार्ड नहीं मिला",
     "reporttxt": "रिपोर्ट",
     "completedtxt": "पूर्ण",
     "pendingtxt": "लंबित",
@@ -27,7 +39,10 @@
     "short-pendingnumbertxt": "लंबित पोर की कुल संख्या"
   },
   "PorFormScreen": {
-    "DateTxt": "तारीख :- ",
+    "CurrentLocation":"वर्तमान स्थान",
+    "lat":"अक्षांश",
+    "lng":"दिक्षांश",
+    "DateTxt": "तारीख",
     "AccussedName": "आरोपी का नाम",
     "FathersName": "पिता का नाम",
     "CasteTxt": "जाति",

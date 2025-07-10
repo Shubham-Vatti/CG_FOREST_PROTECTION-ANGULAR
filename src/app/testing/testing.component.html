@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Speech to Text</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Not Supported Message -->
+  <ion-card *ngIf="!isSupported" color="danger">
+    <ion-card-header>
+      <ion-card-title>Not Supported</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Speech recognition is not supported in this browser.
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Main Interface -->
+  <div *ngIf="isSupported">
+    <!-- Control Buttons -->
+    <div class="controls">
+      <ion-button
+        (click)="toggleRecording()"
+        [color]="isListening ? 'danger' : 'primary'"
+        fill="solid"
+        size="large"
+        expand="block"
+      >
+        <ion-icon [name]="isListening ? 'stop' : 'mic'" slot="start">
+        </ion-icon>
+        {{ isListening ? "Stop Recording" : "Start Recording" }}
+      </ion-button>
+
+      <ion-button
+        (click)="clearText()"
+        color="medium"
+        fill="outline"
+        expand="block"
+      >
+        <ion-icon name="refresh" slot="start"></ion-icon>
+        Clear Text
+      </ion-button>
+    </div>
+
+    <!-- Status Indicator -->
+    <ion-chip *ngIf="isListening" color="success">
+      <ion-icon name="radio-button-on"></ion-icon>
+      <ion-label>Listening...</ion-label>
+    </ion-chip>
+
+    <!-- Error Message -->
+    <ion-card *ngIf="errorMessage" color="danger">
+      <ion-card-header>
+        <ion-card-title>Error</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{ errorMessage }}
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Transcribed Text -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Transcribed Text</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-textarea
+          [(ngModel)]="transcribedText"
+          placeholder="आपका भाषण यहाँ दिखाई देगा... / Your speech will appear here..."
+          rows="8"
+          readonly="false"
+        >
+        </ion-textarea>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Additional Options -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Options</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Language</ion-label>
+          <ion-select
+            [value]="selectedLanguage"
+            (ionChange)="setLanguage($event.detail.value)"
+          >
+            <ion-select-option value="hi-IN">हिंदी (Hindi)</ion-select-option>
+            <ion-select-option value="en-US">English (US)</ion-select-option>
+            <ion-select-option value="en-GB">English (UK)</ion-select-option>
+            <ion-select-option value="es-ES">Spanish</ion-select-option>
+            <ion-select-option value="fr-FR">French</ion-select-option>
+            <ion-select-option value="de-DE">German</ion-select-option>
+            <ion-select-option value="it-IT">Italian</ion-select-option>
+            <ion-select-option value="pt-BR"
+              >Portuguese (Brazil)</ion-select-option
+            >
+            <ion-select-option value="ta-IN">தமிழ் (Tamil)</ion-select-option>
+            <ion-select-option value="te-IN">తెలుగు (Telugu)</ion-select-option>
+            <ion-select-option value="bn-IN">বাংলা (Bengali)</ion-select-option>
+            <ion-select-option value="gu-IN"
+              >ગુજરાતી (Gujarati)</ion-select-option
+            >
+            <ion-select-option value="kn-IN">ಕನ್ನಡ (Kannada)</ion-select-option>
+            <ion-select-option value="ml-IN"
+              >മലയാളം (Malayalam)</ion-select-option
+            >
+            <ion-select-option value="mr-IN">मराठी (Marathi)</ion-select-option>
+            <ion-select-option value="pa-IN"
+              >ਪੰਜਾਬੀ (Punjabi)</ion-select-option
+            >
+            <ion-select-option value="ur-IN">اردو (Urdu)</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true" class="ion-text-center">
   <ion-grid class="full-height">
-    <ion-row 
+    <ion-row
       class="ion-align-items-center ion-justify-content-center full-height"
     >
       <ion-col size-lg="4" size-sm="12" class="content-col">
@@ -20,9 +20,8 @@
           label="{{ 'auth.UidTxt' | translate }}"
           labelPlacement="floating"
           fill="outline"
-          type="number"
           class="input-field"
-          [(ngModel)]="mobile_no"
+          [(ngModel)]="username"
         >
         </ion-input>
 
@@ -64,4 +63,9 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <!-- <ion-img
+    src="../../assets/icon/bg.png"
+    class="bgicon"
+    alt="bg-Icon"
+  ></ion-img> -->
 </ion-content>

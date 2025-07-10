@@ -15,6 +15,7 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 import { Network } from '@capacitor/network';
 import { Router } from '@angular/router';
+import { userdataprops } from '../profile-data/profile_data.model';
 
 @Component({
   selector: 'app-splash',
@@ -40,8 +41,24 @@ export class SplashPage implements OnInit {
   constructor(private router: Router) {
     setTimeout(() => {
       this.router.navigate(['login']);
-    }, 1000);
+    }, 2000);
   }
 
-  async ngOnInit() {}
+  async ngOnInit() {
+
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const userData: userdataprops = JSON.parse(storedUser);
+          console.log('User data found in localStorage:', userData);
+              this.router.navigate(['menu/dashboard']);
+          // this.load_dashboard_Data(
+          //   JSON.stringify({
+          //     emp_id: userData.emp_id,
+          //     designation_id: userData.designation_id,
+          //   })
+          // );
+        } else {
+          console.error('User data not found in localStorage');
+        }
+  }
 }

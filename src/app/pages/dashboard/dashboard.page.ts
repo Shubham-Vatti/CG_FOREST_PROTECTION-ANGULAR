@@ -19,43 +19,55 @@ import {
   IonCol,
   IonRow,
 } from '@ionic/angular/standalone';
-import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
-import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
+import { ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ApiService } from 'src/app/services/api.service';
+import { userdataprops } from 'src/app/profile-data/profile_data.model';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
   standalone: true,
   imports: [
-    IonIcon,
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    BaseChartDirective,
     IonContent,
     IonHeader,
     IonTitle,
     IonToolbar,
-    CommonModule,
-    FormsModule,
     IonButtons,
     IonMenuButton,
-    BaseChartDirective,
     IonImg,
     IonCard,
     IonCardContent,
     IonCardHeader,
     IonCardSubtitle,
     IonCardTitle,
-    TranslateModule,
+    IonIcon,
     IonGrid,
     IonCol,
     IonRow,
   ],
 })
 export class DashboardPage implements OnInit {
-  constructor(private translate: TranslateService) {}
+  totalpor: string = '';
+  approvedpor: string = '';
+  pendingpor: string = '';
+  
+  get isChartVisible(): boolean {
+  return (
+    this.totalpor !== '0' &&
+    this.totalpor !== '' &&
+    (this.approvedpor !== '0' || this.pendingpor !== '0')
+  );
+}
+
   public doughnutChartType: ChartType = 'doughnut';
-  Completednumber = 20;
-  Pendingnumber = 10;
+
   public doughnutChartData = {
     labels: [
       this.translate.instant('dashboard.completedtxt'),
@@ -63,7 +75,7 @@ export class DashboardPage implements OnInit {
     ],
     datasets: [
       {
-        data: [this.Completednumber, this.Pendingnumber],
+        data: [this.approvedpor, this.pendingpor],
         backgroundColor: ['#92e67a', '#008001'],
         hoverBackgroundColor: ['lightgreen', 'green'],
       },
@@ -77,11 +89,66 @@ export class DashboardPage implements OnInit {
       legend: {
         position: 'bottom',
         labels: {
-          color: '#000', // for dark/light mode compatibility
+          color: '#000',
         },
       },
     },
   };
 
-  ngOnInit() {}
+  constructor(
+    private translate: TranslateService,
+    private apiService: ApiService
+  ) {}
+
+  ngOnInit() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const userData: userdataprops = JSON.parse(storedUser);
+      this.load_dashboard_Data(
+        JSON.stringify({
+          emp_id: userData.emp_id,
+          designation_id: userData.designation_id,
+        })
+      );
+    } else {
+      console.error('User data not found in localStorage');
+    }
+  }
+
+  async load_dashboard_Data(data: string) {
+    this.apiService.Get_Complain_List_Data(data).then((circleObservable) => {
+      circleObservable.subscribe({
+        next: (data) => {
+          if (data.response.code === 200) {
+            data.totalComplainData.forEach((ele) => {
+              switch (ele.whichTypeOfComplain) {
+                case '3':
+                  this.approvedpor = ele.totalComplain;
+                  break;
+                case '2':
+                  this.pendingpor = ele.totalComplain;
+                  break;
+                case '1':
+                  this.totalpor = ele.totalComplain;
+                  break;
+              }
+            });
+          } else {
+            console.log('Error in fetching data:', data.response.msg);
+            this.resetComplainCounts();
+          }
+        },
+        error: (err) => {
+          console.error('Circle API error:', err);
+          this.resetComplainCounts();
+        },
+      });
+    });
+  }
+
+  private resetComplainCounts() {
+    this.totalpor = '0';
+    this.approvedpor = '0';
+    this.pendingpor = '0';
+  }
 }

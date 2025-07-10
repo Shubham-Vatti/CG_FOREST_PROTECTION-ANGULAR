@@ -19,6 +19,8 @@ import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Platform } from '@ionic/angular/standalone';
 import { ApiService } from '../services/api.service';
+import { LoginResponseModel } from './login_response.model';
+import { LoaderService } from '../services/loader.service';
 
 @Component({
   selector: 'app-login',
@@ -45,16 +47,16 @@ import { ApiService } from '../services/api.service';
 })
 export class LoginPage implements OnInit {
   currentLang: string;
-  mobile_no:string = '';
+  username: string = '';
   password: string = '';
   constructor(
     private router: Router,
     private translate: TranslateService,
     private platform: Platform,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private loader: LoaderService // <-- inject loader service
   ) {
     this.currentLang = this.translate.currentLang;
-    console.log(this.currentLang);
     translate.addLangs(['en', 'hi']);
     translate.setDefaultLang('en');
 
@@ -63,37 +65,42 @@ export class LoginPage implements OnInit {
     translate.use(this.currentLang);
   }
 
-  // platformdata = this.platform.;
   ngOnInit() {}
-
-  // constructor() {
-  // }
 
   changeLanguage(lang: string) {
     this.currentLang = lang;
     this.translate.use(lang);
   }
 
-  on_login() {
-    if(this.mobile_no)
-    {
-      if(this.password)
-      {
-    let data={
-    mobile:this.mobile_no,
-    password:this.password
-    }
-    this.apiService.User_Login(data).subscribe((resp) => {
-            console.log('--response--',resp);
+  async on_login() {
+    if (this.username) {
+      if (this.password) {
+        // const translatedText = ;
+        await this.loader.show(this.translate.instant('auth.loadertxt'));
+        let data = {
+          username: this.username,
+          password: this.password,
+          firebase_token:""
+        };
+        console.log('Login data:', data);
+
+        (await this.apiService.User_Login(data)).subscribe({
+          next: async (response: LoginResponseModel) => {
+            await this.loader.hide();
+            if (response.response.code === 200) {
+              localStorage.setItem('user', JSON.stringify(response.data[0]));
+              this.router.navigate(['menu/dashboard']);
+            }
+            else{
+              alert(response.response.msg);
+            }
+          },
         });
+      } else {
+        alert('Please enter password');
       }
-      else{
-        alert("Please enter password");
-      }
-    // this.router.navigate(['/menu/dashboard']);
-  }
-  else{
-    alert("Please enter mobile number");
-  }
+    } else {
+      alert('Please enter user name');
     }
+  }
 }

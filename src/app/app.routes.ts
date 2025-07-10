@@ -12,6 +12,21 @@ export const routes: Routes = [
     loadComponent: () => import('./login/login.page').then((m) => m.LoginPage),
   },
   {
+    path: 'profile-data',
+    loadComponent: () =>
+      import('./profile-data/profile-data.page').then((m) => m.ProfileDataPage),
+  },
+  {
+    path: 'view-complain-detail',
+    loadComponent: () =>
+      import('./view-complain-detail/view-complain-detail.page').then((m) => m.ViewComplainDetailPage),
+  },
+  {
+    path: 'test',
+    loadComponent: () =>
+      import('./testing/testing.component').then((m) => m.TestingComponent),
+  },
+  {
     path: '',
     redirectTo: 'splash',
     pathMatch: 'full',
@@ -35,15 +50,17 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'por-form-list',
+        loadComponent: () =>
+          import('../app/pages/por-form-list/por-form-list.component').then(
+            (m) => m.PorFormListComponent
+          ),
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
     ],
-  },
-  {
-    path: 'profile-data',
-    loadComponent: () =>
-      import('./profile-data/profile-data.page').then((m) => m.ProfileDataPage),
   },
 ];

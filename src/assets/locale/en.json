@@ -4,17 +4,29 @@
     "Title2": "Government of Chhattisgarh",
     "LoginBtnTxt": "Login",
     "PasswordTxt": "Password",
-    "UidTxt": "Mobile number",
+    "UidTxt": "User name",
     "UserIdAlert": "Please Fill the User name",
     "UserPasAlert": "Please Fill the Password",
     "AlertTxt": "Alert",
-    "Ok": "Ok"
+    "Ok": "Ok",
+    "profileDetails":"fill profile details",
+    "loadertxt":"Logging in...",
+    "alertusername":"Please enter user name",
+    "alertpassword":"Please enter password"
+  },
+  "profile-setup":{
+    "s-circle":"select circle",
+    "s-division":"select division",
+    "s-subdivision":"select subdivision",
+    "s-range":"select range",
+    "s-beat":"select beat"
   },
   "appbar": {
     "Title-Dashboard": "Dashboard",
     "Title-POR": "POR"
   },
   "dashboard": {
+    "norecordfound":"no record found",
     "reporttxt": "Report",
     "completedtxt": "Completed",
     "pendingtxt": "Pending",
@@ -27,7 +39,10 @@
     "short-pendingnumbertxt": "Total number of pending por"
   },
   "PorFormScreen": {
-    "DateTxt": "Date :- ",
+    "CurrentLocation":"Current location",
+    "lat":"latitude",
+    "lng":"longitude",
+    "DateTxt": "Date",
     "AccussedName": "Name of the accused",
     "FathersName": "Father's name",
     "CasteTxt": "Caste",

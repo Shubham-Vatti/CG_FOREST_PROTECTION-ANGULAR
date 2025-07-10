@@ -1,0 +1,59 @@
+.card-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.status-label-accepted {
+  display: block;
+  /* Take full width inside column */
+  width: 100%;
+  /* Stretch to full column */
+  text-align: center;
+  /* Center the text */
+  margin: 0 4px;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 20px;
+  color: white;
+  white-space: nowrap;
+  font-weight: bold;
+  background-color: green;
+}
+
+.status-label-rejected {
+  display: block;
+  /* Take full width inside column */
+  width: 100%;
+  /* Stretch to full column */
+  text-align: center;
+  /* Center the text */
+  margin: 0 4px;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 20px;
+  color: white;
+  white-space: nowrap;
+  font-weight: bold;
+  background-color: red;
+}
+
+.status-label-detail {
+  display: block;
+  /* Take full width inside column */
+  width: 100%;
+  /* Stretch to full column */
+  text-align: center;
+  /* Center the text */
+  margin: 0 4px;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 20px;
+  color: black;
+  white-space: nowrap;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+ion-fab-button ion-icon {
+}

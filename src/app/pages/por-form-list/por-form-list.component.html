@@ -1,0 +1,131 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ "appbar.Title-POR" | translate }}</ion-title>
+    <ion-img
+      src="assets/icon/Logo.png"
+      slot="end"
+      style="width: 40px; height: 40px; margin-right: 1rem"
+    />
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row
+      *ngFor="let item of localListToFilterComplainDetail"
+      class="ion-padding"
+    >
+      <ion-col size="10">
+        <ion-row>
+          <ion-col size="6" size-lg="6">
+            <ion-row>
+              <ion-col size="12">
+                <ion-label class="ion-label-small" style="color: blue"
+                  >अपराध दिनांक</ion-label
+                >
+              </ion-col>
+              <ion-col size="12">
+                <ion-label class="ion-label-large">{{
+                  item.date_of_crime
+                }}</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col size="6" size-lg="6">
+            <ion-row>
+              <ion-col size="12">
+                <ion-label class="ion-label-small" style="color: blue"
+                  >अपराधी का नाम</ion-label
+                >
+              </ion-col>
+              <ion-col size="12">
+                <ion-label class="ion-label-large">{{
+                  item.accused_name
+                }}</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col size="6" size-lg="6">
+            <ion-row>
+              <ion-col size="12">
+                <ion-label class="ion-label-small" style="color: blue"
+                  >पिता का नाम</ion-label
+                >
+              </ion-col>
+              <ion-col size="12">
+                <ion-label class="ion-label-large">{{
+                  item.accused_fathers_name
+                }}</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+
+          <ion-col size="6" size-lg="6">
+            <ion-row>
+              <ion-col size="12">
+                <ion-label class="ion-label-small" style="color: blue"
+                  >वर्तमान स्थिति</ion-label
+                >
+              </ion-col>
+              <ion-col size="12">
+                <ion-label class="ion-label-large">{{
+                  item.stage_name
+                }}</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+
+          <ion-col size="12" size-lg="6">
+            <ion-row>
+              <ion-col size="4">
+                <ion-label
+                  (click)="detailOrAcceptOrReject(item, '')"
+                  class="status-label-detail"
+                  >विवरण</ion-label
+                >
+              </ion-col>
+              <ion-col size="8">
+                <ion-row *ngIf="item.show_approve_reject_button != '0'">
+                  <ion-col size="6">
+                    <ion-label
+                      (click)="detailOrAcceptOrReject(item, '1')"
+                      class="status-label-accepted"
+                      >स्वीकृत</ion-label
+                    >
+                  </ion-col>
+
+                  <ion-col size="6">
+                    <ion-label
+                      (click)="detailOrAcceptOrReject(item, '2')"
+                      class="status-label-rejected"
+                      >अस्वीकृत</ion-label
+                    >
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="2">
+        <div class="image-container">
+          <!-- <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner> -->
+          <img [src]="item.imageUrl" class="complain-image" />
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-fab
+    *ngIf="is_bg()"
+    horizontal="end"
+    vertical="bottom"
+    slot="fixed"
+    (click)="on_fab_click()"
+  >
+    <ion-fab-button color="primary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

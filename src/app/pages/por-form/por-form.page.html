@@ -1,123 +1,270 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header class="ion-header-toolbar">
+  <ion-toolbar class="custom-toolbar">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-button fill="clear" (click)="goBack()" class="custom-back-button">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>{{ 'appbar.Title-POR' | translate }}</ion-title>
-    <ion-img
-      src="assets/icon/Logo.png"
-      slot="end"
-      style="width: 40px; height: 40px; margin-right: 1rem"
-    />
+
+    <ion-title class="responsive-toolbar-title">
+      {{ 'appbar.Title-POR' | translate }}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <form action="">
-    <p class="title-txt">
-      {{"PorFormScreen.DateTxt"|translate}}: - {{currentDate}}
-    </p>
-    <ion-input
-      label="{{'PorFormScreen.AccussedName'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="{{'PorFormScreen.FathersName'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="{{'PorFormScreen.CasteTxt'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      class="por-form-input"
-      placeholder="Ex. Sample"
-    />
-    <ion-input
-      label="{{'PorFormScreen.AddressTxt'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="{{'PorFormScreen.TypeOfCrimeAndLeagleAcctionTXT'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="{{'PorFormScreen.CrimePlaceTxt'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="{{'PorFormScreen.DateOCrime'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="{{'PorFormScreen.DetailOfSeizedNdActions'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
-    <ion-input
-      label="{{'PorFormScreen.NameOWitness'|translate}}"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Ex. Sample"
-      class="por-form-input"
-    />
+<ion-content>
+  <ion-loading [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+  <!-- HTML Template -->
+  <ion-card class="location-card">
+    <ion-card-header class="card-header">
+      <ion-card-title class="card-title">
+        <div class="title-wrapper">
+          <ion-icon
+            name="location-outline"
+            color="white"
+            class="title-icon"
+          ></ion-icon>
+          <ion-text class="title-text">
+            {{'PorFormScreen.CurrentLocation'|translate}}
+          </ion-text>
+        </div>
+      </ion-card-title>
+    </ion-card-header>
 
-    <ion-input
-      label="Select Item"
-      type="text"
-      labelPlacement="floating"
-      fill="outline"
-      [formControl]="searchControl"
-      (ionInput)="onSearch()"
-      [value]="selectedItem"
-      class="por-form-input"
-      clearInput
-    />
+    <ion-card-content class="card-content">
+      <ion-grid class="location-grid">
+        <ion-row class="location-row">
+          <!-- Latitude Column -->
+          <ion-col size="5" class="coordinate-col">
+            <div class="coordinate-wrapper">
+              <ion-text class="coordinate-label">
+                {{'PorFormScreen.lat'|translate}}
+              </ion-text>
+              <ion-text class="coordinate-value"> {{latitude}} </ion-text>
+            </div>
+          </ion-col>
 
-    <ion-list
-      *ngIf="filteredItems.length > 0 && searchControl.value"
-      style="
-        width: 92%;
-        --highlight-color-focused: rgb(0, 0, 0);
-        background-color: red;
-        margin: 0%;
-        padding: 0%;
-      "
-    >
-      <ion-item
-        style="background-color: red"
-        button
-        *ngFor="let item of filteredItems"
-        (click)="selectItem(item)"
+          <!-- Longitude Column -->
+          <ion-col size="5" class="coordinate-col">
+            <div class="coordinate-wrapper">
+              <ion-text class="coordinate-label">
+                {{'PorFormScreen.lng'|translate}}
+              </ion-text>
+              <ion-text class="coordinate-value"> {{longitude}} </ion-text>
+            </div>
+          </ion-col>
+
+          <!-- Refresh Button Column -->
+          <ion-col size="2" class="refresh-col">
+            <ion-button
+              fill="clear"
+              class="refresh-button"
+              (click)="checkLocationPermissionAndNavigate()"
+              [disabled]="isGettingLocation"
+            >
+              <ion-icon
+                name="refresh-circle-outline"
+                size="large"
+                [class.spin-animation]="isGettingLocation"
+                class="refresh-icon"
+              >
+              </ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+        <!-- Address Row -->
+        <ion-row class="address-row">
+          <ion-col size="12" class="address-col">
+            <ion-text class="address-text">
+              {{current_location_google_addres}}
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid>
+    <ion-col size="12">
+      <ion-label class="ion-label-large" style="font-weight: 700"
+        >व्यक्तिगत जानकारी</ion-label
       >
-        {{ item }}
-      </ion-item>
-    </ion-list>
+    </ion-col>
 
-    <p class="title-txt" style="width: 92%; text-align: center">
-      {{'PorFormScreen.NoteTxt'|translate}}
-    </p>
-    <ion-button style="width: 92%; padding-bottom: 2%"
-      >{{'PorFormScreen.SubmitTxt'|translate}}</ion-button
-    >
-  </form>
+    <ion-row style="margin-top: 5px">
+      <ion-col size="12" size-lg="4">
+        <ion-input
+          class="ion-input"
+          [(ngModel)]="accussedName"
+          label="अपराधी का नाम"
+          label-placement="floating"
+          fill="outline"
+        />
+      </ion-col>
+      <ion-col size="12" size-lg="4">
+        <ion-input
+          [(ngModel)]="accussedFatherName"
+          label="अपराधी के पिता का नाम"
+          label-placement="floating"
+          fill="outline"
+        />
+      </ion-col>
+      <ion-col size="12" size-lg="4">
+        <ion-textarea
+          [(ngModel)]="address"
+          fill="outline"
+          label="पता"
+          label-placement="floating"
+          rows="3"
+          auto-grow="true"
+        ></ion-textarea>
+      </ion-col>
+      <ion-col size="12">
+        <ion-label class="ion-text-extra-small" style="font-weight: 700"
+          >जाति वर्ग</ion-label
+        >
+        <ng-select
+          style="width: 100%"
+          class="nice-ng-select"
+          [clearable]="false"
+          placeholder="जाति वर्ग चुने"
+          [(ngModel)]="selectedAccusedCast"
+          [items]="listOfCast"
+          bindLabel="name"
+          bindValue="id"
+          [searchable]="true"
+        />
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="margin-top: 10px">
+      <ion-col size="12">
+        <ion-label class="ion-label-large" style="font-weight: 700"
+          >अपराध सम्बन्धी जानकारी</ion-label
+        >
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="margin-top: 5px">
+      <ion-col size="12" size-lg="4">
+        <ion-label class="ion-text-extra-small" style="font-weight: 700"
+          >अपराध का प्रकार</ion-label
+        >
+        <ng-select
+          class="nice-ng-select"
+          [clearable]="false"
+          placeholder="अपराध का प्रकार चुनें"
+          [(ngModel)]="selectedCrimType"
+          [items]="listOfCrimType"
+          bindLabel="name"
+          bindValue="id"
+          [searchable]="true"
+        />
+      </ion-col>
+      <ion-col size="12" size-lg="4">
+        <div class="date-picker-card" (click)="onSelecteCrimDate()">
+          <ion-label style="margin-left: 10px">अपराध दिनांक : </ion-label>
+          <ion-label style="margin-left: 10px" class="date-label">
+            {{ crimeDate ? (crimeDate | date:'dd-MM-yyyy') : 'अपराध दिनांक' }}
+          </ion-label>
+          <ion-icon style="color: black" name="calendar-outline"></ion-icon>
+        </div>
+      </ion-col>
+      <ion-col size="12" size-lg="4">
+        <ion-input
+          [(ngModel)]="witness"
+          label="अपराध साक्षी का नाम"
+          label-placement="floating"
+          fill="outline"
+        />
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="margin-top: 5px">
+      <ion-col size="12" size-lg="4">
+        <ion-textarea
+          [(ngModel)]="crimePlace"
+          fill="outline"
+          label="अपराध की जगह"
+          label-placement="floating"
+          rows="3"
+          auto-grow="true"
+        ></ion-textarea>
+      </ion-col>
+
+      <ion-col size="12" size-lg="4">
+        <ion-textarea
+          [(ngModel)]="seizedGoodDetail"
+          fill="outline"
+          label="जब्त सामान का विवरण"
+          label-placement="floating"
+          rows="3"
+          auto-grow="true"
+        ></ion-textarea>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="date-picker-card" style="margin: 5px">
+      <ion-col size="10">
+        <ion-label class="instruction-label"
+          >अगर फोटो लेना है तो बटन पे क्लिक करके फोटो ले सकते है</ion-label
+        >
+      </ion-col>
+
+      <ion-col size="1">
+        <ion-button
+          fill="clear"
+          size="small"
+          (click)="takePic()"
+          class="camera-btn"
+        >
+          <ion-icon
+            style="color: black"
+            size="large"
+            slot="icon-only"
+            name="camera-outline"
+          ></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <div class="horizontal-scroll-wrapper">
+          <div
+            class="photo-container"
+            *ngFor="let photo of photos; let i = index"
+          >
+            <img [src]="photo" class="scroll-image" />
+            <ion-icon
+              style="color: red"
+              name="close-circle"
+              class="remove-icon"
+              (click)="removePhoto(i)"
+            ></ion-icon>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <div class="button-container">
+          <ion-button
+            expand="block"
+            (click)="submitCrimDetail()"
+            class="submit-button"
+          >
+            <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+            SUBMIT
+          </ion-button>
+          <ion-button expand="block" (click)="cancel()" class="cancel-button">
+            <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+            CANCEL
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -23,17 +23,31 @@
       </ion-col>
     </ion-row>
 
-    <!-- Doughnut Chart -->
     <ion-row class="ion-justify-content-center">
-      <ion-col size="12" sizeMd="6">
-        <canvas
-          baseChart
-          [data]="doughnutChartData"
-          [type]="doughnutChartType"
-          [options]="doughnutChartOptions"
-          [legend]="true"
-          style="height: 300px"
-        ></canvas>
+      <ion-col size="12" sizeMd="6" class="ion-text-center">
+        <ng-container *ngIf="isChartVisible; else noData">
+          <canvas
+            baseChart
+            [data]="doughnutChartData"
+            [type]="doughnutChartType"
+            [options]="doughnutChartOptions"
+            [legend]="true"
+            style="height: 300px"
+          ></canvas>
+        </ng-container>
+        <ng-template #noData>
+          <p
+            style="
+              font-weight: 600;
+              color: gray;
+              font-size: 1.2rem;
+              margin-top: 2rem;
+              text-transform: capitalize;
+            "
+          >
+            {{ 'dashboard.norecordfound' | translate }}
+          </p>
+        </ng-template>
       </ion-col>
     </ion-row>
 
@@ -47,22 +61,17 @@
     </ion-row>
 
     <!-- Cards -->
-    <ion-row>
+    <ion-row class="dashboard-cards">
       <!-- Total Card -->
       <ion-col size="12" sizeMd="4">
-        <ion-card class="card-total">
+        <ion-card class="card card-total">
           <ion-card-header>
-            <ion-icon
-              name="analytics-outline"
-              class="card-icon"
-              color="primary"
-            ></ion-icon>
-            <ion-card-title>
-              {{ Completednumber + Pendingnumber }}
-            </ion-card-title>
-            <ion-card-subtitle>
-              {{ 'dashboard.short-totalnumbertext' | translate }}
-            </ion-card-subtitle>
+            <ion-icon name="analytics-outline" class="card-icon"></ion-icon>
+            <ion-card-title>{{ totalpor }}</ion-card-title>
+            <ion-card-subtitle
+              >{{ 'dashboard.short-totalnumbertext' | translate
+              }}</ion-card-subtitle
+            >
           </ion-card-header>
           <ion-card-content>
             {{ 'dashboard.totalnumbertext' | translate }}
@@ -72,16 +81,17 @@
 
       <!-- Completed Card -->
       <ion-col size="12" sizeMd="4">
-        <ion-card class="card-completed">
+        <ion-card class="card card-completed">
           <ion-card-header>
             <ion-icon
               name="checkmark-done-circle-outline"
               class="card-icon"
             ></ion-icon>
-            <ion-card-title>{{ Completednumber }}</ion-card-title>
-            <ion-card-subtitle>
-              {{ 'dashboard.short-completedtnumberxt' | translate }}
-            </ion-card-subtitle>
+            <ion-card-title>{{ approvedpor }}</ion-card-title>
+            <ion-card-subtitle
+              >{{ 'dashboard.short-completedtnumberxt' | translate
+              }}</ion-card-subtitle
+            >
           </ion-card-header>
           <ion-card-content>
             {{ 'dashboard.completedtnumberxt' | translate }}
@@ -91,13 +101,14 @@
 
       <!-- Pending Card -->
       <ion-col size="12" sizeMd="4">
-        <ion-card class="card-pending">
+        <ion-card class="card card-pending">
           <ion-card-header>
             <ion-icon name="time-outline" class="card-icon"></ion-icon>
-            <ion-card-title>{{ Pendingnumber }}</ion-card-title>
-            <ion-card-subtitle>
-              {{ 'dashboard.short-pendingnumbertxt' | translate }}
-            </ion-card-subtitle>
+            <ion-card-title>{{ pendingpor }}</ion-card-title>
+            <ion-card-subtitle
+              >{{ 'dashboard.short-pendingnumbertxt' | translate
+              }}</ion-card-subtitle
+            >
           </ion-card-header>
           <ion-card-content>
             {{ 'dashboard.pendingnumbertxt' | translate }}
