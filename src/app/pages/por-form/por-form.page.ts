@@ -1,14 +1,21 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { Geolocation, PermissionStatus } from '@capacitor/geolocation';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { NavController, ModalController } from '@ionic/angular/standalone';
 import { Diagnostic } from '@awesome-cordova-plugins/diagnostic/ngx';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import {IonicModule} from '@ionic/angular'
+import { IonicModule } from '@ionic/angular';
 import {
   arrowBack,
+  body,
   calendarOutline,
   cameraOutline,
   checkmarkCircleOutline,
@@ -19,41 +26,25 @@ import {
 } from 'ionicons/icons';
 import { Toast } from '@capacitor/toast';
 import { Geolocation } from '@capacitor/geolocation';
-import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonInput,
-  IonButtons,
-  IonMenuButton,
-  IonImg,
-  IonButton,
-  IonDatetime,
-  IonModal,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonIcon,
-  IonCol,
-  IonRow,
-  IonGrid,
-  IonText,
-  IonCard,
-  IonCardContent,
-  IonLoading,
-  IonCardTitle,
-} from '@ionic/angular/standalone';
-import { TranslateModule } from '@ngx-translate/core';
-import { debounceTime } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
 import { Platform } from '@ionic/angular';
 import { SharedserviceService } from 'src/app/services/sharedService/sharedservice.service';
 import { ApiService } from 'src/app/services/api.service';
-import { Router } from '@angular/router';
 import { SelectDateDialogComponent } from 'src/app/dialogs/select-date-dialog/select-date-dialog.component';
 import { MessageDialogComponent } from 'src/app/dialogs/message-dialog/message-dialog.component';
 import { userdataprops } from 'src/app/profile-data/profile_data.model';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { LoaderService } from 'src/app/services/loader.service';
+import { SQLiteService } from 'src/app/services/localstorage/sqlite.service';
+import {
+  EmployeeData,
+  MasterDataProps,
+} from 'src/assets/models/reusable.model';
 // import { Platform } from '@angular/cdk/platform.d-cnFZCLss';
 
 @Component({
@@ -61,20 +52,25 @@ import { userdataprops } from 'src/app/profile-data/profile_data.model';
   templateUrl: './por-form.page.html',
   styleUrls: ['./por-form.page.scss'],
   standalone: true,
-  providers: [Diagnostic],
+  providers: [Diagnostic, provideNativeDateAdapter()],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     FormsModule,
     TranslateModule,
     ReactiveFormsModule,
     NgSelectModule,
-    IonicModule
-    
+    IonicModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
   ],
 })
 export class PorFormPage implements OnInit {
   photos: string[] = [];
 
+  agreeForm!: FormGroup; // 👈 declare formGroup
   isLoading: boolean = false;
   loadingMessage: string = '';
 
@@ -88,19 +84,35 @@ export class PorFormPage implements OnInit {
   longitude: number | null = null;
 
   accussedName: string = '';
+  PorNo: string = '';
   accussedFatherName: string = '';
   address: string = '';
-  selectedAccusedCast: any = null;
 
+  selectedAccusedCast: any = null;
   selectedCrimType: any = null;
   crimePlace: string = '';
   crimeDate: string = '';
   witness: string = '';
+
+  FirstwitnessName: string = '';
+  SecondwitnessName: string = '';
+  FirstwitnessAddress: string = '';
+  SecondwitnessAddress: string = '';
+
   seizedGoodDetail: string = '';
+  placeofCrime: string = '';
+
+  selectedCrime: any = null;
+  selectedDhara: string = '';
+  filteredDharaList: string[] = [];
+  storeduserData!: EmployeeData;
 
   listOfCrimType: any = [];
   listOfCast: any = [];
-
+  listOfBeat: any = [];
+  selectedCaste: string = '';
+  selectedCompartment: string = '';
+  loginedOfficerEmpId: number = 0;
   constructor(
     private sharedService: SharedserviceService,
     private cdRef: ChangeDetectorRef,
@@ -109,7 +121,14 @@ export class PorFormPage implements OnInit {
     private navController: NavController,
     private apiService: ApiService,
     private modalController: ModalController,
+    private fb: FormBuilder,
+    private translate: TranslateService,
+    private loader: LoaderService, // <-- inject loader service
+    private sqliteService: SQLiteService
   ) {
+    this.agreeForm = this.fb.group({
+      agree: new FormControl(null),
+    });
     addIcons({
       closeCircle,
       cameraOutline,
@@ -123,15 +142,15 @@ export class PorFormPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.getLoginedOfficerData();
+
     this.getCurrentLatLng();
 
     this.setCrimDate();
 
-    this.getMasterData();
-
-    this.getLoginedOfficerData();
-    
-    // this.getCurrentLatLng()
+    this.agreeForm = this.fb.group({
+      agree: new FormControl(null),
+    });
   }
 
   setCrimDate() {
@@ -142,43 +161,30 @@ export class PorFormPage implements OnInit {
     this.crimeDate = `${yyyy}-${mm}-${dd}`;
   }
 
-  // getTranslation(key: string) {
-  //   return this.languageService.getTranslation(key);
-  // }
-
-
   async getCurrentLatLng() {
     try {
+      this.current_location_google_addres = this.translate.instant(
+        'PorFormScreen.locationtxt'
+      );
+
       const coordinates = await Geolocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 20000, // ⬅️ Increase timeout (20 seconds)
-      maximumAge: 0
-    });
+        enableHighAccuracy: true,
+        timeout: 20000, // ⬅️ Increase timeout (20 seconds)
+        maximumAge: 0,
+      });
       this.latitude = coordinates.coords.latitude;
       this.longitude = coordinates.coords.longitude;
       this.isGettingLocation = false;
-      this.getGoogleAddress(coordinates.coords.latitude, coordinates.coords.longitude);
+      this.getGoogleAddress(
+        coordinates.coords.latitude,
+        coordinates.coords.longitude
+      );
+
+      this.cdRef.detectChanges();
     } catch (err) {
       console.error('Location error', err);
     }
   }
-
-
-  // async getCurrentLocation() {
-  //   try {
-  //     const position = await Geolocation.getCurrentPosition({
-  //       enableHighAccuracy: true,
-  //       timeout: 20000, // 20 seconds
-  //       maximumAge: 0,
-  //     });
-  //     this.lat = position.coords.latitude;
-  //     this.lon = position.coords.longitude;
-  //     // console.log('Lat~Lng', this.lat + '~' + this.lon);
-  //     this.getGoogleAddress(this.lat, this.lon);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
   getGoogleAddress(lat: number, lon: number) {
     this.apiService.getGoogleAddress(lat, lon).subscribe(
@@ -187,6 +193,7 @@ export class PorFormPage implements OnInit {
           this.current_location_google_addres =
             response.display_name.toString();
           console.log('Login Success:', response.display_name);
+          this.cdRef.detectChanges();
         } else {
           //this.longToast('Problem to initialize application');
         }
@@ -219,7 +226,7 @@ export class PorFormPage implements OnInit {
         // Step 3: Get current position
         // const coordinates = await Geolocation.getCurrentPosition();
         // console.log('Location:', coordinates)
-        this.getCurrentLatLng()
+        this.getCurrentLatLng();
         // this.getCurrentLocation();
       } else {
         this.showPermissionAlert('Location permission not granted');
@@ -275,58 +282,67 @@ export class PorFormPage implements OnInit {
   }
 
   submitCrimDetail() {
-    if (this.accussedName === '') {
-      this.shortToast('अपराधी का नाम');
-      return;
-    }
-
-    if (this.accussedFatherName === '') {
-      this.shortToast('अपराधी के पिता का नाम');
-      return;
-    }
-
-    if (this.address === '') {
-      this.shortToast('अपराधी का पता');
-      return;
-    }
-
-    if (this.selectedAccusedCast === null) {
-      this.shortToast('जाति वर्ग चुने');
-      return;
-    }
-
-    if (this.selectedCrimType === null) {
-      this.shortToast('अपराध का प्रकार चुनें');
-      return;
-    }
-
-    if (this.witness === '') {
-      this.shortToast('अपराध साक्षी का नाम');
-      return;
-    }
-
-    if (this.crimePlace === '') {
-      this.shortToast('अपराध की जगह');
-      return;
-    }
-
-    if (this.seizedGoodDetail === '') {
-      this.shortToast('जब्त सामान का विवरण');
-    }
-
     const formData = new FormData();
 
     // Text fields
     formData.append('accusedName', this.accussedName);
     formData.append('accusedFathersName', this.accussedFatherName);
-    formData.append('accusedCast', this.selectedAccusedCast.toString());
+    formData.append('accusedCast', '1');
     formData.append('accusedAddress', this.address.toString());
-    formData.append('typeOfCrime', this.selectedCrimType.toString());
-    formData.append('placeOfCrime', this.crimePlace.toString());
+    formData.append('typeOfCrime', this.selectedCrime);
+    formData.append('placeOfCrime', this.placeofCrime.toString());
     formData.append('dateOfCrime', this.crimeDate);
     formData.append('detailsOfSeizedGoods', this.seizedGoodDetail.toString());
-    formData.append('nameOfWitness', this.witness.toString());
-    formData.append('createdBy', this.loginedOfficerEmpId.toString());
+    formData.append(
+      'address_of_witness_one',
+      this.FirstwitnessAddress.toString()
+    );
+    formData.append('name_of_witness_one', this.FirstwitnessName.toString());
+    formData.append(
+      'address_of_witness_two',
+      this.SecondwitnessAddress.toString()
+    );
+    formData.append('name_of_witness_two', this.SecondwitnessName.toString());
+    formData.append('por_number', this.PorNo.toString());
+    formData.append('createdBy', this.storeduserData.emp_id.toString());
+    formData.append('crime_dhara', this.selectedDhara);
+    formData.append('lat', this.latitude?.toString() || '');
+    formData.append('lng', this.longitude?.toString() || '');
+    formData.append('range_id', this.storeduserData.range_id.toString());
+    formData.append(
+      'sub_division_id',
+      this.storeduserData.sub_division_id.toString()
+    );
+    formData.append('sub_rang_id', this.storeduserData.range_id.toString());
+    formData.append('division_id', this.storeduserData.division_id.toString());
+    formData.append('circle_id', this.storeduserData.circle_id.toString());
+    formData.append('beat_id', this.storeduserData.beat_id.toString());
+    formData.append('compartment_number', this.selectedCompartment);
+    formData.append('map_address', this.current_location_google_addres);
+
+    console.log('accusedName:', this.accussedName);
+    console.log('accusedFathersName:', this.accussedFatherName);
+    console.log('accusedCast:', this.selectedCaste);
+    console.log('accusedAddress:', this.address);
+    console.log('typeOfCrime:', this.selectedCrimType);
+    console.log('placeOfCrime:', this.crimePlace);
+    console.log('dateOfCrime:', this.crimeDate);
+    console.log('detailsOfSeizedGoods:', this.seizedGoodDetail);
+    console.log('address_of_witness_one:', this.FirstwitnessAddress);
+    console.log('name_of_witness_one:', this.FirstwitnessName);
+    console.log('address_of_witness_two:', this.SecondwitnessAddress);
+    console.log('name_of_witness_two:', this.SecondwitnessName);
+    console.log('por_number:', this.PorNo);
+    console.log('crime_dhara:', this.selectedDhara);
+    console.log('lat:', '123.32323');
+    console.log('lng:', '1231232.3232');
+    console.log('range_id:', this.storeduserData.range_id);
+    console.log('sub_division_id:', this.storeduserData.sub_division_id);
+    console.log('sub_rang_id:', this.storeduserData.range_id);
+    console.log('division_id:', this.storeduserData.division_id);
+    console.log('circle_id:', this.storeduserData.circle_id);
+    console.log('beat_id:', this.storeduserData.beat_id);
+    console.log('compartment_number:', this.selectedCompartment);
 
     // Image files from photos[] array
     for (let i = 0; i < this.photos.length; i++) {
@@ -334,22 +350,26 @@ export class PorFormPage implements OnInit {
       formData.append('listOfFile', blob, `photo_${i + 1}.jpg`);
     }
 
-    this.showDialog('शिकायत जमा किया जा रहा है कृपया इंतजार करें');
+    console.log('--formdata--', formData);
+    this.loader.show('शिकायत जमा किया जा रहा है कृपया इंतजार करें');
     this.apiService.submitCrimData(formData).subscribe(
       (response) => {
         this.dismissDialog();
         if (response.response.code === 200) {
-          this.afterSubmitComplainSuccessfully(response.response.msg, true);
+          this.loader.hide();
+          alert(response.response.msg);
+          // this.afterSubmitComplainSuccessfully(response.response.msg, true);
           this.sharedService.setRefresh(true);
         } else {
+          this.loader.hide();
+
           this.longToast(response.response.msg);
         }
 
         console.log('submitComplainInfo', response.response);
       },
       (error) => {
-        console.log('Error', error);
-        this.dismissDialog();
+        this.loader.hide();
         this.longToast(error);
       }
     );
@@ -392,39 +412,56 @@ export class PorFormPage implements OnInit {
     return new Blob([u8arr], { type: mime });
   }
 
-  loginedOfficerEmpId: number = 0;
-
   async getLoginedOfficerData() {
-    const value = await localStorage.getItem('user');
+    const value: MasterDataProps = await this.sqliteService.getOfflineData();
+    this.listOfCast = value.cast;
+    this.listOfCrimType = value.crimType;
+    this.listOfBeat = value.beat[0].compartment_no[0]
+      .split(',')
+      .map((comp) => comp.trim());
 
-    if (value) {
-      const userData = JSON.parse(value) as userdataprops;
-      this.loginedOfficerEmpId = userData.emp_id;
-    }
+    this.storeduserData = value.data[0];
+    this.loginedOfficerEmpId = value.data[0].emp_id;
   }
 
   cancel() {
     this.goBack();
   }
 
-  getMasterData() {
-    this.showDialog('कृपया प्रतीक्षा करें.....');
-    this.apiService.getCastAndCrimMaster().subscribe({
-      next: async (response) => {
-        this.dismissDialog();
-        console.log('Data--inside--caste', response.response.code);
-        if (response.response.code === 200) {
-          this.listOfCast = response.cast_data;
-          this.listOfCrimType = response.crim_type_data;
-        }
-      },
-      error: async (error) => {
-        this.cdRef.detectChanges();
-        this.dismissDialog();
-        this.shortToast(error);
-      },
-    });
+  onCrimeChange(selectedCrimeId: number) {
+    const selected = this.listOfCrimType.find(
+      (item: any) => item.id === selectedCrimeId
+    );
+    this.selectedCrime = selected.id;
+    console.log('--selected-crime-type--', selected.id);
+    this.filteredDharaList = selected ? selected.dhara : [];
+    this.selectedDhara = ''; // Reset dhara when crime changes
   }
+
+  // getMasterData(data: number) {
+  //   this.loader.show('कृपया प्रतीक्षा करें.....');
+  //   this.apiService
+  //     .getCastAndCrimMaster(JSON.stringify({ emp_id: data }))
+  //     .subscribe({
+  //       next: async (response) => {
+  //         this.loader.hide();
+  //         console.log('-Data--inside--caste-', response.cast_data);
+  //         console.log('listOfBeat', response.beat_name);
+  //         if (response.response.code === 200) {
+  //           this.listOfCast = response.cast_data;
+  //           this.listOfCrimType = response.crim_type_data;
+  //           this.listOfBeat = response.beat_name[0].compartment_no[0]
+  //             .split(',')
+  //             .map((comp) => comp.trim());
+  //         }
+  //       },
+  //       error: async (error) => {
+  //         this.loader.hide();
+  //         this.cdRef.detectChanges();
+  //         this.shortToast(error);
+  //       },
+  //     });
+  // }
 
   async shortToast(msg: string) {
     console.log(msg);
@@ -475,14 +512,58 @@ export class PorFormPage implements OnInit {
 
     const image = await Camera.getPhoto({
       quality: 90,
+      allowEditing: false,
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera,
     });
+    // const watermarked = await this.addWatermarkToImage(image.dataUrl!);
 
     if (image.dataUrl) {
       this.photos.push(image.dataUrl); // ✅ Safe now
     } else {
       console.warn('No image data found');
     }
+  }
+
+  private async addWatermarkToImage(base64Image: string): Promise<string> {
+    return new Promise((resolve) => {
+      const image = new Image();
+      image.src = base64Image;
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        // Draw image
+        ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+        // Watermark text
+        const now = new Date();
+        const watermarkText = now.toLocaleString();
+
+        ctx!.font = 'bold 40px Arial';
+        ctx!.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx!.strokeStyle = 'rgba(0, 0, 0, 0.8)';
+        ctx!.lineWidth = 3;
+
+        const x = 20;
+        const y = canvas.height - 30;
+
+        // Stroke for contrast
+        ctx!.strokeText(watermarkText, x, y);
+        ctx!.fillText(watermarkText, x, y);
+
+        // Export new image
+        const watermarkedDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+        resolve(watermarkedDataUrl);
+      };
+
+      image.onerror = (err) => {
+        console.error('Image load error', err);
+      };
+    });
   }
 }

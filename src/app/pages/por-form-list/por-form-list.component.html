@@ -1,9 +1,11 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
+  <ion-toolbar style="--background: linear-gradient(135deg, green, teal)">
+    <ion-buttons slot="start" style="color: white">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ "appbar.Title-POR" | translate }}</ion-title>
+    <ion-title style="color: white">{{
+      "appbar.Title-POR" | translate
+    }}</ion-title>
     <ion-img
       src="assets/icon/Logo.png"
       slot="end"
@@ -13,108 +15,105 @@
 </ion-header>
 <ion-content>
   <ion-grid>
-    <ion-row
-      *ngFor="let item of localListToFilterComplainDetail"
-      class="ion-padding"
-    >
-      <ion-col size="10">
-        <ion-row>
-          <ion-col size="6" size-lg="6">
-            <ion-row>
-              <ion-col size="12">
-                <ion-label class="ion-label-small" style="color: blue"
-                  >अपराध दिनांक</ion-label
-                >
-              </ion-col>
-              <ion-col size="12">
-                <ion-label class="ion-label-large">{{
-                  item.date_of_crime
-                }}</ion-label>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-          <ion-col size="6" size-lg="6">
-            <ion-row>
-              <ion-col size="12">
-                <ion-label class="ion-label-small" style="color: blue"
-                  >अपराधी का नाम</ion-label
-                >
-              </ion-col>
-              <ion-col size="12">
-                <ion-label class="ion-label-large">{{
-                  item.accused_name
-                }}</ion-label>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-          <ion-col size="6" size-lg="6">
-            <ion-row>
-              <ion-col size="12">
-                <ion-label class="ion-label-small" style="color: blue"
-                  >पिता का नाम</ion-label
-                >
-              </ion-col>
-              <ion-col size="12">
-                <ion-label class="ion-label-large">{{
-                  item.accused_fathers_name
-                }}</ion-label>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-
-          <ion-col size="6" size-lg="6">
-            <ion-row>
-              <ion-col size="12">
-                <ion-label class="ion-label-small" style="color: blue"
-                  >वर्तमान स्थिति</ion-label
-                >
-              </ion-col>
-              <ion-col size="12">
-                <ion-label class="ion-label-large">{{
-                  item.stage_name
-                }}</ion-label>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-
-          <ion-col size="12" size-lg="6">
-            <ion-row>
-              <ion-col size="4">
+    <ion-row *ngFor="let item of localListToFilterComplainDetail">
+      <ion-card>
+        <ion-col size="12">
+          <ion-row>
+            <ion-col size="6" size-lg="6">
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label class="ion-label-small">{{
+                    "PorFormScreen.porno" | translate
+                  }}</ion-label>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-label class="ion-label-large">{{
+                    item.por_number
+                  }}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-col size="6" size-lg="6">
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label class="ion-label-small">{{
+                    "PorFormScreen.AccussedName" | translate
+                  }}</ion-label>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-label class="ion-label-large">{{
+                    item.accused_name
+                  }}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-col size="6" size-lg="6">
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label class="ion-label-small">{{
+                    "PorFormScreen.FathersName" | translate
+                  }}</ion-label>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-label class="ion-label-large">{{
+                    item.accused_fathers_name
+                  }}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-col size="6" size-lg="6">
+              <ion-row class="ion-align-items-center">
+                <!-- Status Text Column -->
+                <ion-col size="12">
+                  <ion-label class="ion-label-small">
+                    {{ "PorFormScreen.statustxt" | translate }}
+                  </ion-label>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-label class="ion-label-large">
+                    {{ item.stage_name }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <!-- <ion-row></ion-row> -->
+            <ion-col size="6" size-lg="6">
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label class="ion-label-small">{{
+                    "PorFormScreen.noofdayslefttxt" | translate
+                  }}</ion-label>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-label class="ion-label-large" style="color: green">{{
+                    item.left_days_to_resolve_por
+                  }}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <!-- Buttons Column -->
+            <!-- Detail Button -->
+            <ion-col size="6">
+              <ion-row>
                 <ion-label
                   (click)="detailOrAcceptOrReject(item, '')"
                   class="status-label-detail"
-                  >विवरण</ion-label
+                  style="cursor: pointer"
                 >
-              </ion-col>
-              <ion-col size="8">
-                <ion-row *ngIf="item.show_approve_reject_button != '0'">
-                  <ion-col size="6">
-                    <ion-label
-                      (click)="detailOrAcceptOrReject(item, '1')"
-                      class="status-label-accepted"
-                      >स्वीकृत</ion-label
-                    >
-                  </ion-col>
+                  {{ "PorFormScreen.detailstxt" | translate }}
+                </ion-label>
+              </ion-row>
+            </ion-col>
 
-                  <ion-col size="6">
-                    <ion-label
-                      (click)="detailOrAcceptOrReject(item, '2')"
-                      class="status-label-rejected"
-                      >अस्वीकृत</ion-label
-                    >
-                  </ion-col>
-                </ion-row>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-      <ion-col size="2">
-        <div class="image-container">
-          <!-- <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner> -->
-          <img [src]="item.imageUrl" class="complain-image" />
-        </div>
-      </ion-col>
+            <!-- Action Button -->
+            <ion-col size="6" *ngIf="item.show_approve_reject_button != '0'">
+              <ion-button expand="block" id="open-modal">
+                {{ item.button_text }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-card>
     </ion-row>
   </ion-grid>
   <ion-fab
@@ -128,4 +127,24 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>RA Officer List</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="dismissModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list *ngFor="let officer of raOfficerList">
+          <ion-label style="border-bottom: 1px solid black">
+            <h2>{{ officer.empName }}</h2>
+          </ion-label>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

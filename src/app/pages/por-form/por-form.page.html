@@ -5,7 +5,6 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-
     <ion-title class="responsive-toolbar-title">
       {{ 'appbar.Title-POR' | translate }}
     </ion-title>
@@ -14,8 +13,9 @@
 
 <ion-content>
   <ion-loading [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
-  <!-- HTML Template -->
-  <ion-card class="location-card">
+
+  <!-- Current Location Card -->
+  <ion-card class="location-card" style="margin-top: 10px">
     <ion-card-header class="card-header">
       <ion-card-title class="card-title">
         <div class="title-wrapper">
@@ -25,7 +25,7 @@
             class="title-icon"
           ></ion-icon>
           <ion-text class="title-text">
-            {{'PorFormScreen.CurrentLocation'|translate}}
+            {{ 'PorFormScreen.CurrentLocation' | translate }}
           </ion-text>
         </div>
       </ion-card-title>
@@ -34,32 +34,29 @@
     <ion-card-content class="card-content">
       <ion-grid class="location-grid">
         <ion-row class="location-row">
-          <!-- Latitude Column -->
           <ion-col size="5" class="coordinate-col">
             <div class="coordinate-wrapper">
-              <ion-text class="coordinate-label">
-                {{'PorFormScreen.lat'|translate}}
-              </ion-text>
-              <ion-text class="coordinate-value"> {{latitude}} </ion-text>
+              <ion-text class="coordinate-label"
+                >{{ 'PorFormScreen.lat' | translate }}</ion-text
+              >
+              <ion-text class="coordinate-value">{{ latitude }}</ion-text>
             </div>
           </ion-col>
 
-          <!-- Longitude Column -->
           <ion-col size="5" class="coordinate-col">
             <div class="coordinate-wrapper">
-              <ion-text class="coordinate-label">
-                {{'PorFormScreen.lng'|translate}}
-              </ion-text>
-              <ion-text class="coordinate-value"> {{longitude}} </ion-text>
+              <ion-text class="coordinate-label"
+                >{{ 'PorFormScreen.lng' | translate }}</ion-text
+              >
+              <ion-text class="coordinate-value">{{ longitude }}</ion-text>
             </div>
           </ion-col>
 
-          <!-- Refresh Button Column -->
           <ion-col size="2" class="refresh-col">
             <ion-button
               fill="clear"
               class="refresh-button"
-              (click)="checkLocationPermissionAndNavigate()"
+              (click)="getCurrentLatLng()"
               [disabled]="isGettingLocation"
             >
               <ion-icon
@@ -67,151 +64,276 @@
                 size="large"
                 [class.spin-animation]="isGettingLocation"
                 class="refresh-icon"
-              >
-              </ion-icon>
+              ></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
 
-        <!-- Address Row -->
         <ion-row class="address-row">
           <ion-col size="12" class="address-col">
-            <ion-text class="address-text">
-              {{current_location_google_addres}}
-            </ion-text>
+            <ion-text class="address-text"
+              >{{ current_location_google_addres }}</ion-text
+            >
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-card-content>
   </ion-card>
 
+  <!-- Personal Info Section -->
   <ion-grid>
-    <ion-col size="12">
-      <ion-label class="ion-label-large" style="font-weight: 700"
-        >व्यक्तिगत जानकारी</ion-label
+    <ion-card style="padding: 12px">
+      <ion-row
+        ><ion-col size="12"
+          ><ion-label class="ion-label-large" style="font-weight: 700"
+            >{{ 'PorFormScreen.personalinformationtxt' | translate }}</ion-label
+          ></ion-col
+        ></ion-row
       >
-    </ion-col>
 
-    <ion-row style="margin-top: 5px">
-      <ion-col size="12" size-lg="4">
-        <ion-input
-          class="ion-input"
-          [(ngModel)]="accussedName"
-          label="अपराधी का नाम"
-          label-placement="floating"
-          fill="outline"
-        />
-      </ion-col>
-      <ion-col size="12" size-lg="4">
-        <ion-input
-          [(ngModel)]="accussedFatherName"
-          label="अपराधी के पिता का नाम"
-          label-placement="floating"
-          fill="outline"
-        />
-      </ion-col>
-      <ion-col size="12" size-lg="4">
-        <ion-textarea
-          [(ngModel)]="address"
-          fill="outline"
-          label="पता"
-          label-placement="floating"
-          rows="3"
-          auto-grow="true"
-        ></ion-textarea>
-      </ion-col>
-      <ion-col size="12">
-        <ion-label class="ion-text-extra-small" style="font-weight: 700"
-          >जाति वर्ग</ion-label
-        >
-        <ng-select
-          style="width: 100%"
-          class="nice-ng-select"
-          [clearable]="false"
-          placeholder="जाति वर्ग चुने"
-          [(ngModel)]="selectedAccusedCast"
-          [items]="listOfCast"
-          bindLabel="name"
-          bindValue="id"
-          [searchable]="true"
-        />
-      </ion-col>
-    </ion-row>
+      <ion-row style="margin-top: 5px">
+        <ion-col size="12" size-lg="4">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.porno' | translate }}</ion-label
+          >
+          <ion-input
+            [(ngModel)]="PorNo"
+            fill="outline"
+            style="margin-top: 5px"
+          ></ion-input>
+        </ion-col>
 
-    <ion-row style="margin-top: 10px">
-      <ion-col size="12">
-        <ion-label class="ion-label-large" style="font-weight: 700"
-          >अपराध सम्बन्धी जानकारी</ion-label
-        >
-      </ion-col>
-    </ion-row>
+        <ion-col size="12" size-lg="4">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.Compartment' | translate }}</ion-label
+          >
+          <mat-form-field
+            appearance="outline"
+            style="width: 100%; margin-top: 5px; background-color: white"
+          >
+            <mat-select
+              [(value)]="selectedCompartment"
+              placeholder="Select Compartment"
+            >
+              <mat-option *ngFor="let comp of listOfBeat" [value]="comp"
+                >{{ comp }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </ion-col>
 
-    <ion-row style="margin-top: 5px">
-      <ion-col size="12" size-lg="4">
-        <ion-label class="ion-text-extra-small" style="font-weight: 700"
-          >अपराध का प्रकार</ion-label
-        >
-        <ng-select
-          class="nice-ng-select"
-          [clearable]="false"
-          placeholder="अपराध का प्रकार चुनें"
-          [(ngModel)]="selectedCrimType"
-          [items]="listOfCrimType"
-          bindLabel="name"
-          bindValue="id"
-          [searchable]="true"
-        />
-      </ion-col>
-      <ion-col size="12" size-lg="4">
-        <div class="date-picker-card" (click)="onSelecteCrimDate()">
-          <ion-label style="margin-left: 10px">अपराध दिनांक : </ion-label>
-          <ion-label style="margin-left: 10px" class="date-label">
-            {{ crimeDate ? (crimeDate | date:'dd-MM-yyyy') : 'अपराध दिनांक' }}
-          </ion-label>
-          <ion-icon style="color: black" name="calendar-outline"></ion-icon>
-        </div>
-      </ion-col>
-      <ion-col size="12" size-lg="4">
-        <ion-input
-          [(ngModel)]="witness"
-          label="अपराध साक्षी का नाम"
-          label-placement="floating"
-          fill="outline"
-        />
-      </ion-col>
-    </ion-row>
+        <ion-col size="12" size-lg="4">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.AccussedName' | translate }}</ion-label
+          >
+          <ion-input
+            [(ngModel)]="accussedName"
+            fill="outline"
+            style="margin-top: 5px"
+          ></ion-input>
+        </ion-col>
 
-    <ion-row style="margin-top: 5px">
-      <ion-col size="12" size-lg="4">
-        <ion-textarea
-          [(ngModel)]="crimePlace"
-          fill="outline"
-          label="अपराध की जगह"
-          label-placement="floating"
-          rows="3"
-          auto-grow="true"
-        ></ion-textarea>
-      </ion-col>
+        <ion-col size="12" size-lg="6">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.FathersName' | translate }}</ion-label
+          >
+          <ion-input
+            [(ngModel)]="accussedFatherName"
+            fill="outline"
+            style="margin-top: 5px"
+          ></ion-input>
+        </ion-col>
 
-      <ion-col size="12" size-lg="4">
-        <ion-textarea
-          [(ngModel)]="seizedGoodDetail"
-          fill="outline"
-          label="जब्त सामान का विवरण"
-          label-placement="floating"
-          rows="3"
-          auto-grow="true"
-        ></ion-textarea>
-      </ion-col>
-    </ion-row>
+        <ion-col size="12" size-lg="6">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.CasteTxt' | translate }}</ion-label
+          >
+          <mat-form-field
+            appearance="outline"
+            style="width: 100%; margin-top: 5px; background-color: white"
+          >
+            <mat-select [(value)]="selectedCaste" placeholder="Select Caste">
+              <mat-option *ngFor="let caste of listOfCast" [value]="caste"
+                >{{ caste.name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </ion-col>
 
+        <ion-col size="12">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.AddressTxt' | translate }}</ion-label
+          >
+          <ion-textarea
+            [(ngModel)]="address"
+            fill="outline"
+            [autoGrow]="true"
+            rows="5"
+            style="margin-top: 5px"
+          ></ion-textarea>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+
+    <!-- Crime Details Section -->
+
+    <ion-card style="padding: 12px">
+      <ion-row style="margin-top: 10px">
+        <ion-col size="12">
+          <ion-label class="ion-label-large" style="font-weight: 700"
+            >{{ 'PorFormScreen.crimehead' | translate }}</ion-label
+          >
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="margin-top: 5px">
+        <ion-col size="12">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.TypeOfCrimeAndLeagleAcctionTXT' | translate
+            }}</ion-label
+          >
+          <mat-form-field
+            appearance="outline"
+            style="width: 100%; margin-top: 5px; background-color: white"
+          >
+            <mat-select
+              placeholder="Select Crime Type"
+              (selectionChange)="onCrimeChange($event.value)"
+            >
+              <mat-option
+                *ngFor="let crime of listOfCrimType"
+                [value]="crime.id"
+                >{{ crime.name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="filteredDharaList.length > 0"
+            appearance="outline"
+            style="width: 100%; margin-top: 5px; background-color: white"
+          >
+            <mat-select placeholder="Select Dhara" [(value)]="selectedDhara">
+              <mat-option
+                *ngFor="let dhara of filteredDharaList"
+                [value]="dhara"
+                >{{ dhara }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </ion-col>
+
+        <ion-col size="12" size-lg="6">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.DateOCrime' | translate }}</ion-label
+          >
+          <mat-form-field appearance="outline" style="width: 100%">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="crimeDate"
+              placeholder="MM/DD/YYYY"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </ion-col>
+
+        <ion-col size="12" size-lg="6">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.DetailOfSeizedNdActions' | translate
+            }}</ion-label
+          >
+          <ion-input
+            [(ngModel)]="seizedGoodDetail"
+            fill="outline"
+            style="margin-top: 5px"
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.CrimePlaceTxt' | translate }}</ion-label
+          >
+          <ion-textarea
+            [(ngModel)]="placeofCrime"
+            fill="outline"
+            [autoGrow]="true"
+            rows="5"
+            style="margin-top: 5px"
+          ></ion-textarea>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <!-- Witness Section -->
+    <ion-card style="padding: 12px">
+      <ion-row style="margin-top: 10px">
+        <ion-col size="12">
+          <ion-label class="ion-label-large" style="font-weight: 700"
+            >{{ 'PorFormScreen.WitnessInfo' | translate }}</ion-label
+          >
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="margin-top: 5px">
+        <ion-col size="12" size-lg="6">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.NameOWitness1' | translate }}</ion-label
+          >
+          <ion-input
+            [(ngModel)]="FirstwitnessName"
+            fill="outline"
+            style="margin-top: 5px"
+          ></ion-input>
+        </ion-col>
+        <ion-col size="12" size-lg="6">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.WitnessAddressTxt1' | translate }}</ion-label
+          >
+          <ion-input
+            [(ngModel)]="FirstwitnessAddress"
+            fill="outline"
+            style="margin-top: 5px"
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="margin-top: 5px">
+        <ion-col size="12" size-lg="6">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.NameOWitness2' | translate }}</ion-label
+          >
+          <ion-input
+            [(ngModel)]="SecondwitnessName"
+            fill="outline"
+            style="margin-top: 5px"
+          ></ion-input>
+        </ion-col>
+        <ion-col size="12" size-lg="6">
+          <ion-label class="ion-text-extra-small"
+            >{{ 'PorFormScreen.WitnessAddressTxt2' | translate }}</ion-label
+          >
+          <ion-input
+            [(ngModel)]="SecondwitnessAddress"
+            fill="outline"
+            style="margin-top: 5px"
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+
+    <!-- Photo Section -->
     <ion-row class="date-picker-card" style="margin: 5px">
       <ion-col size="10">
         <ion-label class="instruction-label"
-          >अगर फोटो लेना है तो बटन पे क्लिक करके फोटो ले सकते है</ion-label
+          >{{ 'PorFormScreen.cameratxt' | translate }}</ion-label
         >
       </ion-col>
-
       <ion-col size="1">
         <ion-button
           fill="clear"
@@ -238,8 +360,8 @@
           >
             <img [src]="photo" class="scroll-image" />
             <ion-icon
-              style="color: red"
               name="close-circle"
+              style="color: red"
               class="remove-icon"
               (click)="removePhoto(i)"
             ></ion-icon>
@@ -248,6 +370,7 @@
       </ion-col>
     </ion-row>
 
+    <!-- Submit/Cancel Buttons -->
     <ion-row>
       <ion-col size="12">
         <div class="button-container">

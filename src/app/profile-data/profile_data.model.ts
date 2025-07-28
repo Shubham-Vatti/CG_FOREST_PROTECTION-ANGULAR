@@ -38,7 +38,7 @@ export interface GetCastAndCrimTypeMasterResponse {
     response: SuccessResponse,
     crim_type_data: GetCastAndCrimTypeMasterResponseModal[],
     cast_data: GetCastAndCrimTypeMasterResponseModal[]
-
+    beat_name:Get_Beat_Data_CastAndCrimTypeMasterResponse[]
 }
 
 export interface SuccessResponse {
@@ -46,6 +46,12 @@ export interface SuccessResponse {
     msg: string
 }
 
+export interface Get_Beat_Data_CastAndCrimTypeMasterResponse{ 
+            id:number,
+            name:string,
+            compartment_no: string[]
+
+    }
 export interface GetCastAndCrimTypeMasterResponseModal {
     id: number,
     name: string

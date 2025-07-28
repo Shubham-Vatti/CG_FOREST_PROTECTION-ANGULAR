@@ -21,6 +21,7 @@ import { Platform } from '@ionic/angular/standalone';
 import { ApiService } from '../services/api.service';
 import { LoginResponseModel } from './login_response.model';
 import { LoaderService } from '../services/loader.service';
+import { SQLiteService } from '../services/localstorage/sqlite.service';
 
 @Component({
   selector: 'app-login',
@@ -54,7 +55,8 @@ export class LoginPage implements OnInit {
     private translate: TranslateService,
     private platform: Platform,
     private apiService: ApiService,
-    private loader: LoaderService // <-- inject loader service
+    private loader: LoaderService, // <-- inject loader service
+    private sqliteService: SQLiteService
   ) {
     this.currentLang = this.translate.currentLang;
     translate.addLangs(['en', 'hi']);
@@ -80,7 +82,7 @@ export class LoginPage implements OnInit {
         let data = {
           username: this.username,
           password: this.password,
-          firebase_token:""
+          firebase_token: '',
         };
         console.log('Login data:', data);
 
@@ -88,19 +90,19 @@ export class LoginPage implements OnInit {
           next: async (response: LoginResponseModel) => {
             await this.loader.hide();
             if (response.response.code === 200) {
+              await this.sqliteService.storeLoginData(response);
               localStorage.setItem('user', JSON.stringify(response.data[0]));
               this.router.navigate(['menu/dashboard']);
-            }
-            else{
+            } else {
               alert(response.response.msg);
             }
           },
         });
       } else {
-        alert('Please enter password');
+        alert(this.translate.instant('auth.alertpassword'));
       }
     } else {
-      alert('Please enter user name');
+      alert(this.translate.instant('auth.alertusername'));
     }
   }
 }

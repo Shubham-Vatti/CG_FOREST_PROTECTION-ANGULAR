@@ -5,6 +5,8 @@ import {
   withPreloading,
   PreloadAllModules,
 } from '@angular/router';
+import { defineCustomElements } from 'jeep-sqlite/loader'; // ✅ ADD THIS
+// import { defineCustomElements } from '@';
 import {
   IonicRouteStrategy,
   provideIonicAngular,
@@ -19,6 +21,7 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { importProvidersFrom } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+defineCustomElements(window); // ✅ INITIALIZE jeep-sqlite BEFORE APP BOOTSTRAPS
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/locale/', '.json');
@@ -47,5 +50,6 @@ bootstrapApplication(AppComponent, {
         },
       })
     ),
+    // provideCharts(), // <-- IMPORTANT for ng2-charts v8+
   ],
 });

@@ -1,7 +1,14 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonTextarea, IonLabel, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  IonTextarea,
+  IonLabel,
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { IonicModule } from '@ionic/angular'; // Import IonicModule
 
 // import { LanguageServiceService } from 'src/app/services/languageServices/language-service.service';
@@ -12,7 +19,17 @@ import { NavController, ModalController } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
-import { arrowBack, calendarOutline, cameraOutline, checkmarkCircleOutline, closeCircle, closeCircleOutline, locationOutline, mapOutline, refreshCircleOutline } from 'ionicons/icons';
+import {
+  arrowBack,
+  calendarOutline,
+  cameraOutline,
+  checkmarkCircleOutline,
+  closeCircle,
+  closeCircleOutline,
+  locationOutline,
+  mapOutline,
+  refreshCircleOutline,
+} from 'ionicons/icons';
 import { ApproveRejectComponent } from 'src/app/dialogs/approve-reject/approve-reject.component';
 
 // import { ApiServiceService } from 'src/app/services/apiServices/api-service.service';
@@ -27,38 +44,66 @@ import { ImagePreviewModalComponent } from 'src/app/dialogs/image-preview-modal/
 import { ApiService } from '../services/api.service';
 import { PORFormDataprops } from '../pages/por-form-list/por-form-list.model';
 import { UserLoginResponse } from '../login/login_response.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-view-complain-detail',
   templateUrl: './view-complain-detail.page.html',
   styleUrls: ['./view-complain-detail.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, TranslateModule],
 })
 export class ViewComplainDetailPage implements OnInit {
-
   photos: string[] = [];
   imageBaseUrl: string = 'https://6975-117-254-215-10.ngrok-free.app/uploads/';
 
   isLoading: boolean = false;
   loadingMessage: string = 'Please wait.....';
 
-  lat: string = "0"; lon: string = "0";
-  complain_location_google_addres: string = "";
-  accussedName: string = ""; accussedFatherName: string = ""; address: string = "";
-  accussedCast: string = ""; crimType: string = "";
-  crimeDate: string = "";
-  witness: string = ""; crimePlace: string = "";
-  seizedGoodDetail: string = "";
+  lat: string = '0';
+  lon: string = '0';
+  complain_location_google_addres: string = '';
+  accussedName: string = '';
+  accussedFatherName: string = '';
+  address: string = '';
+  accussedCast: string = '';
+  crimType: string = '';
+  crimeDate: string = '';
+  witness1: string = '';
+  witness2: string = '';
+  addressWitness1: string = '';
+  addressWitness2: string = '';
+  crimePlace: string = '';
+  seizedGoodDetail: string = '';
+  porno: string = '';
+  compartmentNumber: string = '';
+  imgurl!: string;
 
   comingComplaintData!: PORFormDataprops;
   is_pending = false;
-  constructor(private alertCtrl: AlertController, private sharedService: SharedserviceService, private cdRef: ChangeDetectorRef, private apiService: ApiService, private modalCtrl: ModalController, private router: Router, private navController: NavController) {
-    addIcons({ mapOutline, closeCircle, cameraOutline, arrowBack, locationOutline, refreshCircleOutline, calendarOutline, checkmarkCircleOutline, closeCircleOutline });
+  constructor(
+    private alertCtrl: AlertController,
+    private sharedService: SharedserviceService,
+    private cdRef: ChangeDetectorRef,
+    private apiService: ApiService,
+    private modalCtrl: ModalController,
+    private router: Router,
+    private navController: NavController
+  ) {
+    addIcons({
+      mapOutline,
+      closeCircle,
+      cameraOutline,
+      arrowBack,
+      locationOutline,
+      refreshCircleOutline,
+      calendarOutline,
+      checkmarkCircleOutline,
+      closeCircleOutline,
+    });
   }
 
   async ngOnInit() {
-
     this.getLoginedOfficerDetail();
 
     const nav = this.router.getCurrentNavigation();
@@ -68,21 +113,26 @@ export class ViewComplainDetailPage implements OnInit {
       // Convert plain object back to model
       this.comingComplaintData = JSON.parse(data) as PORFormDataprops;
 
-
       this.accussedName = this.comingComplaintData.accused_name;
       this.accussedFatherName = this.comingComplaintData.accused_fathers_name;
       this.address = this.comingComplaintData.accused_address;
       this.accussedCast = this.comingComplaintData.cast_name;
       this.crimType = this.comingComplaintData.crime_type;
       this.crimeDate = this.comingComplaintData.date_of_crime;
-      this.witness = this.comingComplaintData.name_of_witness;
+      this.witness1 = this.comingComplaintData.name_of_witness_one;
+      this.witness2 = this.comingComplaintData.name_of_witness_two;
+      this.addressWitness1 = this.comingComplaintData.address_of_witness_one;
+      this.addressWitness2 = this.comingComplaintData.address_of_witness_two;
       this.crimePlace = this.comingComplaintData.place_of_crime;
       this.seizedGoodDetail = this.comingComplaintData.details_of_seized_goods;
       this.lat = this.comingComplaintData.lat;
       this.lon = this.comingComplaintData.lng;
-      this.complain_location_google_addres = this.comingComplaintData.map_address;
-
-      if (this.comingComplaintData.show_approve_reject_button === "1") {
+      this.complain_location_google_addres =
+        this.comingComplaintData.map_address;
+      this.imgurl = this.comingComplaintData.imageUrl;
+      this.porno = this.comingComplaintData.por_number;
+      this.compartmentNumber = this.comingComplaintData.compartment_number;
+      if (this.comingComplaintData.show_approve_reject_button === '1') {
         this.is_pending = true;
       } else {
         this.is_pending = false;
@@ -94,7 +144,6 @@ export class ViewComplainDetailPage implements OnInit {
       //     .filter(name => name.trim() !== '')
       //     .map(name => this.imageBaseUrl + name.trim());
       // }
-
     }
   }
 
@@ -103,22 +152,19 @@ export class ViewComplainDetailPage implements OnInit {
   }
 
   openMap() {
-
     const lat = this.lat;
     const lng = this.lon;
     const url = `https://www.google.com/maps?q=${lat},${lng}`;
     window.open(url, '_system'); // '_system' works in Cordova/Capacitor apps
-
   }
 
   async approveOrReject(approveOrReject: string) {
+    let msg = '';
 
-    let msg = "";
-
-    if (approveOrReject === "1") {
-      msg = "स्वीकृत टिप्पणी लिखें";
-    } else if (approveOrReject === "2") {
-      msg = "अस्वीकृत टिप्पणी लिखें";
+    if (approveOrReject === '1') {
+      msg = 'स्वीकृत टिप्पणी लिखें';
+    } else if (approveOrReject === '2') {
+      msg = 'अस्वीकृत टिप्पणी लिखें';
     }
 
     const modal = await this.modalCtrl.create({
@@ -126,24 +172,28 @@ export class ViewComplainDetailPage implements OnInit {
       cssClass: 'custom-dialog-modal',
       componentProps: {
         remarkLabel: msg,
-        approved_or_reject: approveOrReject
+        approved_or_reject: approveOrReject,
       },
       backdropDismiss: false,
     });
 
     modal.onDidDismiss().then((result) => {
       if (result.data?.confirmed) {
-        this.approveRejectComplain(result.data.remark, result.data.approved_or_reject);
+        this.approveRejectComplain(
+          result.data.remark,
+          result.data.approved_or_reject
+        );
       }
     });
 
     await modal.present();
-
   }
 
-  approveRejectComplain(approvedRejectRemark: string, approved_or_reject: number) {
-
-    this.showDialog("कृपया प्रतीक्षा करें.....");
+  approveRejectComplain(
+    approvedRejectRemark: string,
+    approved_or_reject: number
+  ) {
+    this.showDialog('कृपया प्रतीक्षा करें.....');
 
     // this.apiService.approveRejectComplain(
     //   this.loginedOffierEmpId,
@@ -207,7 +257,7 @@ export class ViewComplainDetailPage implements OnInit {
   loginedOffierEmpId: number = 0;
 
   async getLoginedOfficerDetail() {
-    const value  = await localStorage.getItem('user');
+    const value = await localStorage.getItem('user');
 
     if (value) {
       const userData = JSON.parse(value) as UserLoginResponse;
@@ -223,18 +273,15 @@ export class ViewComplainDetailPage implements OnInit {
     // });
     // await alert.present();
 
-
     const modal = await this.modalCtrl.create({
       component: ImagePreviewModalComponent,
       cssClass: 'custom-dialog-modal',
       componentProps: {
-        imageUrl: imageUrl
+        imageUrl: imageUrl,
       },
       backdropDismiss: true,
     });
 
     await modal.present();
-
   }
-
 }

@@ -26,6 +26,7 @@
     "Title-POR": "POR"
   },
   "dashboard": {
+    "D-Loadertxt":"Fetching Dashboard data...",
     "norecordfound":"no record found",
     "reporttxt": "Report",
     "completedtxt": "Completed",
@@ -39,19 +40,34 @@
     "short-pendingnumbertxt": "Total number of pending por"
   },
   "PorFormScreen": {
+    
+    "detailstxt":"view details",
+    "statustxt":"current status",
+    "locationtxt":"Getting your location, please wait....",
+    "cameratxt":"If you want to take a photo, you can take it by clicking on the button",
+    "personalinformationtxt":"personal information",
+    "Compartment":"Compartment no",
+    "noofdayslefttxt":"No of days left",
     "CurrentLocation":"Current location",
+    "googleLocation":"Google map location",
+    "MaplocationTxt": "Map location",
     "lat":"latitude",
+    "porno":"Por no",
     "lng":"longitude",
     "DateTxt": "Date",
     "AccussedName": "Name of the accused",
     "FathersName": "Father's name",
     "CasteTxt": "Caste",
     "AddressTxt": "Address",
+    "WitnessAddressTxt1": "Address of first witness",
+    "WitnessAddressTxt2": "Address of second witnesss",
+    "WitnessInfo":"Witness information",
     "TypeOfCrimeAndLeagleAcctionTXT": "Type of crime and legal action's",
     "CrimePlaceTxt": "Place where the crime occured",
     "DateOCrime": "Date of crime",
     "DetailOfSeizedNdActions": "Detail's of seized goods and action taken",
-    "NameOWitness": "Name of witness",
+    "NameOWitness1": "Name of first witness",
+    "NameOWitness2": "Name of second witness ",
     "NoteTxt": "Note :- This report must be sent to the senior officer within 48 hr of crime being detected",
     "SubmitTxt": "Submit",
     "monthNames": [
@@ -67,6 +83,7 @@
       "October",
       "November",
       "December"
-    ]
+    ],
+    "crimehead":"crime related information"
   }
 }

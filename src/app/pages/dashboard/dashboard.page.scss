@@ -8,7 +8,10 @@
   color: black;
   font-weight: 500;
 }
-
+.ion-menu-button {
+  display: block !important;
+  color: white !important;
+}
 canvas {
   display: block;
   width: 70% !important;
@@ -19,6 +22,11 @@ canvas {
 .dashboard-cards {
   display: flex;
   flex-direction: row;
+}
+
+/* When only one card (e.g., Total) is visible */
+.dashboard-cards.center-cards {
+  justify-content: center;
 }
 
 ion-card {

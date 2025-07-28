@@ -45,20 +45,18 @@ export class SplashPage implements OnInit {
   }
 
   async ngOnInit() {
-
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          const userData: userdataprops = JSON.parse(storedUser);
-          console.log('User data found in localStorage:', userData);
-              this.router.navigate(['menu/dashboard']);
-          // this.load_dashboard_Data(
-          //   JSON.stringify({
-          //     emp_id: userData.emp_id,
-          //     designation_id: userData.designation_id,
-          //   })
-          // );
-        } else {
-          console.error('User data not found in localStorage');
-        }
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const userData: userdataprops = JSON.parse(storedUser);
+      this.router.navigate(['login']);
+      // this.load_dashboard_Data(
+      //   JSON.stringify({
+      //     emp_id: userData.emp_id,
+      //     designation_id: userData.designation_id,
+      //   })
+      // );
+    } else {
+      console.error('User data not found in localStorage');
+    }
   }
 }

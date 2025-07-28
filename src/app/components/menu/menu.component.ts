@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
-import { home, informationCircle } from 'ionicons/icons';
+import { exitOutline, home, informationCircle } from 'ionicons/icons';
 
 @Component({
   selector: 'app-menu',
@@ -13,13 +13,13 @@ import { home, informationCircle } from 'ionicons/icons';
   imports: [CommonModule, IonicModule, RouterModule,TranslateModule],
 })
 export class MenuComponent implements OnInit {
-  constructor(private router: Router) {
-    addIcons({home,informationCircle})
+  constructor(private router: Router,private translate:TranslateService) {
+    addIcons({home,informationCircle,exitOutline})
   }
 
   public appPages = [
-    { title: 'dashboard', url: '/dashboard', icon: 'home' },
-    { title: 'por', url: '/por-form-list', icon: 'information-circle' },
+    { title: this.translate.instant('appbar.Title-Dashboard'), url: '/dashboard', icon: 'home' },
+    { title: this.translate.instant('appbar.Title-POR'), url: '/por-form-list', icon: 'information-circle' },
   ];
 
   onMenuClick(page: string) {

@@ -1,9 +1,11 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
+  <ion-toolbar style="--background: linear-gradient(135deg, green, teal)">
+    <ion-buttons slot="start" style="color: white">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ 'appbar.Title-Dashboard' | translate }}</ion-title>
+    <ion-title style="color: white"
+      >{{ 'appbar.Title-Dashboard' | translate }}</ion-title
+    >
     <ion-img
       src="assets/icon/Logo.png"
       slot="end"
@@ -15,6 +17,8 @@
 <ion-content [fullscreen]="true">
   <!-- Title -->
   <ion-grid>
+    <!-- <ion-card>
+      <ion-card-content> -->
     <ion-row>
       <ion-col>
         <h2 class="title-txt" style="margin: 5% 0 2% 5%">
@@ -31,7 +35,6 @@
             [data]="doughnutChartData"
             [type]="doughnutChartType"
             [options]="doughnutChartOptions"
-            [legend]="true"
             style="height: 300px"
           ></canvas>
         </ng-container>
@@ -40,7 +43,7 @@
             style="
               font-weight: 600;
               color: gray;
-              font-size: 1.2rem;
+              font-size: 1rem;
               margin-top: 2rem;
               text-transform: capitalize;
             "
@@ -59,9 +62,11 @@
         </p>
       </ion-col>
     </ion-row>
+    <!-- </ion-card-content>
+    </ion-card> -->
 
     <!-- Cards -->
-    <ion-row class="dashboard-cards">
+    <ion-row class="dashboard-cards" [class.center-cards]="isBG">
       <!-- Total Card -->
       <ion-col size="12" sizeMd="4">
         <ion-card class="card card-total">
@@ -80,7 +85,7 @@
       </ion-col>
 
       <!-- Completed Card -->
-      <ion-col size="12" sizeMd="4">
+      <ion-col size="12" sizeMd="4" *ngIf="!isBG">
         <ion-card class="card card-completed">
           <ion-card-header>
             <ion-icon
@@ -98,9 +103,7 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
-
-      <!-- Pending Card -->
-      <ion-col size="12" sizeMd="4">
+      <ion-col size="12" sizeMd="4" *ngIf="!isBG">
         <ion-card class="card card-pending">
           <ion-card-header>
             <ion-icon name="time-outline" class="card-icon"></ion-icon>

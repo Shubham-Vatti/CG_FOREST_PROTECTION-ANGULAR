@@ -15,7 +15,7 @@ import { PORFormListProps } from '../pages/por-form-list/por-form-list.model';
   providedIn: 'root', // works in standalone apps too
 })
 export class ApiService {
-  private baseUrl = 'https://03c4de541d17.ngrok-free.app';
+  private baseUrl = 'https://forest.cg.gov.in/FOREST_COMPLAIN';
   private User_Login_Url = `${this.baseUrl}/api/ForestComplainMonitoringSystem/login_employee`;
   private Get_Circle_Url = `${this.baseUrl}/api/ForestComplainMonitoringSystem/getCircle`;
   private Get_Divison_Url = `${this.baseUrl}/api/ForestComplainMonitoringSystem/getDivision`;
@@ -39,7 +39,7 @@ export class ApiService {
       })
       .pipe(
         map((response) => {
-            return response as LoginResponseModel;
+          return response as LoginResponseModel;
         }),
         catchError(this.handleError)
       );
@@ -63,23 +63,10 @@ export class ApiService {
     data?: string | null
   ): Promise<Observable<MasterListDataProps>> {
     const headers = { 'Content-Type': 'application/json' };
-    return this.http.post<MasterListDataProps>(this.Get_Divison_Url, data,{headers:headers}).pipe(
-      map((response) => {
-        console.log('--inside-resp--', response);
-        if (response.response.code === 200) {
-          return response as MasterListDataProps;
-        } else {
-          throw new Error(`Unexpected status code: ${response.response.code}`);
-        }
-      }),
-      catchError(this.handleError)
-    );
-  }
-
-  async Get_Sub_Division_Data(data?:string|null): Promise<Observable<MasterListDataProps>> {
-    const headers = { 'Content-Type': 'application/json' };
     return this.http
-      .post<MasterListDataProps>(this.Get_SubDivision_Url, data,{headers:headers})
+      .post<MasterListDataProps>(this.Get_Divison_Url, data, {
+        headers: headers,
+      })
       .pipe(
         map((response) => {
           console.log('--inside-resp--', response);
@@ -95,50 +82,90 @@ export class ApiService {
       );
   }
 
-  async Get_Range_Data(data?:string|null): Promise<Observable<MasterListDataProps>> {
+  async Get_Sub_Division_Data(
+    data?: string | null
+  ): Promise<Observable<MasterListDataProps>> {
     const headers = { 'Content-Type': 'application/json' };
-    return this.http.post<MasterListDataProps>(this.Get_Range_Url, data,{headers:headers}).pipe(
-      map((response) => {
-        console.log('--inside-resp--', response);
-        if (response.response.code === 200) {
-          return response as MasterListDataProps;
-        } else {
-          throw new Error(`Unexpected status code: ${response.response.code}`);
-        }
-      }),
-      catchError(this.handleError)
-    );
+    return this.http
+      .post<MasterListDataProps>(this.Get_SubDivision_Url, data, {
+        headers: headers,
+      })
+      .pipe(
+        map((response) => {
+          console.log('--inside-resp--', response);
+          if (response.response.code === 200) {
+            return response as MasterListDataProps;
+          } else {
+            throw new Error(
+              `Unexpected status code: ${response.response.code}`
+            );
+          }
+        }),
+        catchError(this.handleError)
+      );
   }
 
-  async Get_Beat_Data(data?:string|null): Promise<Observable<MasterListDataProps>> {
+  async Get_Range_Data(
+    data?: string | null
+  ): Promise<Observable<MasterListDataProps>> {
     const headers = { 'Content-Type': 'application/json' };
-    return this.http.post<MasterListDataProps>(this.Get_Beat_Url, data,{headers}).pipe(
-      map((response) => {
-        console.log('--inside-resp--', response);
-        if (response.response.code === 200) {
-          return response as MasterListDataProps;
-        } else {
-          throw new Error(`Unexpected status code: ${response.response.code}`);
-        }
-      }),
-      catchError(this.handleError)
-    );
+    return this.http
+      .post<MasterListDataProps>(this.Get_Range_Url, data, { headers: headers })
+      .pipe(
+        map((response) => {
+          console.log('--inside-resp--', response);
+          if (response.response.code === 200) {
+            return response as MasterListDataProps;
+          } else {
+            throw new Error(
+              `Unexpected status code: ${response.response.code}`
+            );
+          }
+        }),
+        catchError(this.handleError)
+      );
   }
 
-  
-  async Get_Complain_List_Data(data?:string|null): Promise<Observable<PORFormListProps>> {
+  async Get_Beat_Data(
+    data?: string | null
+  ): Promise<Observable<MasterListDataProps>> {
     const headers = { 'Content-Type': 'application/json' };
-    return this.http.post<PORFormListProps>(this.Complain_List_Url, data,{headers}).pipe(
-      map((response) => {
-        console.log('--inside-resp--', response);
-        if (response.response.code === 200) {
-          return response as PORFormListProps;
-        } else {
-          throw new Error(`Unexpected status code: ${response.response.code}`);
-        }
-      }),
-      catchError(this.handleError)
-    );
+    return this.http
+      .post<MasterListDataProps>(this.Get_Beat_Url, data, { headers })
+      .pipe(
+        map((response) => {
+          console.log('--inside-resp--', response);
+          if (response.response.code === 200) {
+            return response as MasterListDataProps;
+          } else {
+            throw new Error(
+              `Unexpected status code: ${response.response.code}`
+            );
+          }
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  async Get_Complain_List_Data(
+    data?: string | null
+  ): Promise<Observable<PORFormListProps>> {
+    const headers = { 'Content-Type': 'application/json' };
+    return this.http
+      .post<PORFormListProps>(this.Complain_List_Url, data, { headers })
+      .pipe(
+        map((response) => {
+          console.log('--inside-resp--', response);
+          if (response.response.code === 200) {
+            return response as PORFormListProps;
+          } else {
+            throw new Error(
+              `Unexpected status code: ${response.response.code}`
+            );
+          }
+        }),
+        catchError(this.handleError)
+      );
   }
 
   submitProfilData(body: string): Observable<GetMastersResponse> {
@@ -159,7 +186,6 @@ export class ApiService {
         }),
         catchError(this.handleError)
       );
-
   }
 
   // GET GOOGLE ADDRESS PROGRAMATICALLY
@@ -176,7 +202,7 @@ export class ApiService {
           lat.toString() +
           '&lon=' +
           lng.toString() +
-          '&format=json'
+          '&format=json&accept-language=hi'
       )
       .pipe(
         catchError((error) => {
@@ -185,10 +211,13 @@ export class ApiService {
       );
   }
   // Get Cast And Crim Master
-  getCastAndCrimMaster(): Observable<GetCastAndCrimTypeMasterResponse> {
+  getCastAndCrimMaster(
+    body: string
+  ): Observable<GetCastAndCrimTypeMasterResponse> {
+    console.log('--inside--getCastAndCrimMaster--', body);
     const headers = { 'Content-Type': 'application/json' };
     return this.http
-      .post<GetCastAndCrimTypeMasterResponse>(this.Get_CastNDCrime_Url, null, {
+      .post<GetCastAndCrimTypeMasterResponse>(this.Get_CastNDCrime_Url, body, {
         headers: headers,
       })
       .pipe(
@@ -206,11 +235,8 @@ export class ApiService {
   }
 
   submitCrimData(formformData: FormData): Observable<GetMastersResponse> {
-    const headers = { 'Content-Type': 'application/json' };
     return this.http
-      .post<GetMastersResponse>(this.apiUrlSubmitComplainData, formformData, {
-        headers: headers,
-      })
+      .post<GetMastersResponse>(this.apiUrlSubmitComplainData, formformData)
       .pipe(
         map((response) => {
           if (response.response.code === 200) {
@@ -228,10 +254,6 @@ export class ApiService {
   Get_Data_Api(): Observable<any> {
     return this.http.get(`${this.baseUrl}/`);
   }
-
-  // postItem(url:string,item: object|null): Observable<any> {
-  //   return this.http.post(`${this.baseUrl}+${url}`, item);
-  // }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

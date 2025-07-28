@@ -39,15 +39,15 @@
 }
 
 .status-label-detail {
-  display: block;
+  // display: block;
   /* Take full width inside column */
-  width: 100%;
+  // width: 100%;
   /* Stretch to full column */
   text-align: center;
   /* Center the text */
   margin: 0 4px;
   font-size: 14px;
-  padding: 8px 10px;
+  padding: 8px;
   border-radius: 20px;
   color: black;
   white-space: nowrap;
@@ -55,5 +55,16 @@
   border: 2px solid black;
 }
 
-ion-fab-button ion-icon {
+.ion-label-small {
+  color: black;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-size: medium;
+}
+
+.ion-label-large {
+  color: grey;
+  font-weight: 600;
+  // font-weight: ;
+  // text-transform;
 }

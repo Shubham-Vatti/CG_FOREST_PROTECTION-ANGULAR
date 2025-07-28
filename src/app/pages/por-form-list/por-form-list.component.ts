@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular/standalone';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { OverlayEventDetail } from '@ionic/core/components';
 import {
   IonContent,
   IonHeader,
@@ -24,6 +25,11 @@ import {
   IonRow,
   IonCol,
   IonSpinner,
+  IonCardContent,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonCardHeader,
+  IonCard,
 } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
@@ -63,34 +69,67 @@ import { Router } from '@angular/router';
     IonRow,
     IonCol,
     IonSpinner,
+    IonCardContent,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCardHeader,
+    IonCard,
   ],
 })
 export class PorFormListComponent implements OnInit {
+  raOfficerList = [
+    {
+      emp_id: 118,
+      empName: 'North Dhamtari RA Sir',
+      mobile_number: '',
+    },
+    {
+      emp_id: 119,
+      empName: 'South Dhamtari RA Sir',
+      mobile_number: '',
+    },
+    {
+      emp_id: 120,
+      empName: 'Kurud RA Sir',
+      mobile_number: '',
+    },
+  ];
+
   localListToFilterComplainDetail: PORFormDataprops[] = [];
-  clickedComplainDetail:PORFormDataprops={
-  complain_id: '',
-  transferd_to: '',
-  complain_history_table_id: '',
-  complain_status: '',
-  complain_status_text: '',
-  current_stage: '',
-  stage_name: '',
-  accused_name: '',
-  accused_fathers_name: '',
-  cast_name: '',
-  crime_type: '',
-  accused_address: '',
-  type_of_crime: '',
-  place_of_crime: '',
-  date_of_crime: '',
-  details_of_seized_goods: '',
-  name_of_witness: '',
-  show_approve_reject_button: '',
-  lat: '',
-  lng: '',
-  map_address: '',
-  imageUrl: ''
-};
+  clickedComplainDetail: PORFormDataprops = {
+    complain_id: '',
+    transferd_to: '',
+    complain_history_table_id: '',
+    complain_status: '',
+    complain_status_text: '',
+    current_stage: '',
+    stage_name: '',
+    accused_name: '',
+    accused_fathers_name: '',
+    cast_name: '',
+    crime_type: '',
+    accused_address: '',
+    type_of_crime: '',
+    place_of_crime: '',
+    date_of_crime: '',
+    details_of_seized_goods: '',
+    name_of_witness_one: '',
+    name_of_witness_two: '',
+    show_approve_reject_button: '',
+    lat: '',
+    lng: '',
+    map_address: '',
+    imageUrl: '',
+    all_image_name: '',
+    address_of_witness_one: '',
+    address_of_witness_two: '',
+    button_text: '',
+    complain_progress_stage: '',
+    por_number: '',
+    compartment_number: '',
+    crime_dhara: '',
+    left_days_to_resolve_por: '',
+  };
   userdata: userdataprops = {
     emp_id: 0,
     f_name: '',
@@ -112,33 +151,39 @@ export class PorFormListComponent implements OnInit {
     sub_division_name: '',
     is_self_verified: 0,
   };
-  constructor(private cdr: ChangeDetectorRef, private apiService: ApiService,private modalCtrl: ModalController, private cdRef: ChangeDetectorRef,private router:Router) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private apiService: ApiService,
+    private modalCtrl: ModalController,
+    private cdRef: ChangeDetectorRef,
+    private router: Router
+  ) {}
 
-  
-  async detailOrAcceptOrReject(clickedComplainDetail: PORFormDataprops, detailAcceptOrReject: string) {
+  async detailOrAcceptOrReject(
+    clickedComplainDetail: PORFormDataprops,
+    detailAcceptOrReject: string
+  ) {
+    let msg = '';
 
-    let msg = "";
-
-    if (detailAcceptOrReject === "") {
+    if (detailAcceptOrReject === '') {
       //console.log("GO TO SEE DETAIL");
 
       const jsonData = JSON.stringify(clickedComplainDetail);
 
       this.router.navigateByUrl('/view-complain-detail', {
         state: { data: jsonData },
-        replaceUrl: false
+        replaceUrl: false,
       });
 
       return;
     } else {
       this.clickedComplainDetail = clickedComplainDetail;
 
-      if (detailAcceptOrReject === "1") {
-        msg = "स्वीकृत टिप्पणी लिखें";
-      } else if (detailAcceptOrReject === "2") {
-        msg = "अस्वीकृत टिप्पणी लिखें";
+      if (detailAcceptOrReject === '1') {
+        msg = 'स्वीकृत टिप्पणी लिखें';
+      } else if (detailAcceptOrReject === '2') {
+        msg = 'अस्वीकृत टिप्पणी लिखें';
       }
-
     }
 
     const modal = await this.modalCtrl.create({
@@ -146,7 +191,7 @@ export class PorFormListComponent implements OnInit {
       cssClass: 'custom-dialog-modal',
       componentProps: {
         remarkLabel: msg,
-        approved_or_reject: detailAcceptOrReject
+        approved_or_reject: detailAcceptOrReject,
       },
       backdropDismiss: false,
     });
@@ -154,17 +199,20 @@ export class PorFormListComponent implements OnInit {
     modal.onDidDismiss().then((result) => {
       if (result.data?.confirmed) {
         //console.log('ApprroveRejectRemark:', result.data.remark);
-        this.approveRejectComplain(result.data.remark, result.data.approved_or_reject);
+        this.approveRejectComplain(
+          result.data.remark,
+          result.data.approved_or_reject
+        );
       }
     });
 
     await modal.present();
-
   }
 
-  
-  approveRejectComplain(approvedRejectRemark: string, approved_or_reject: number) {
-
+  approveRejectComplain(
+    approvedRejectRemark: string,
+    approved_or_reject: number
+  ) {
     // this.apiService.approveRejectComplain(
     //   this.userdata.emp_id,
     //   approved_or_reject,
@@ -173,21 +221,16 @@ export class PorFormListComponent implements OnInit {
     //   (this.clickedComplainDetail as PORFormDataprops).complain_id,
     // ).subscribe(
     //   async (response:any) => {
-
     //     this.cdRef.detectChanges;
-
     //     if (response.response.code === 200) {
-
     //       this.load_dashboard_Data(
     //     JSON.stringify({
     //       emp_id: this.userdata?.emp_id,
     //       designation_id: this.userdata?.designation_id,
     //     }));
-
     //     } else {
     //       alert(response.response.msg)
     //     }
-
     //   },
     //   async (error:any) => {
     //     //await this.dismissLoading();
@@ -201,7 +244,7 @@ export class PorFormListComponent implements OnInit {
     this.apiService.Get_Complain_List_Data(data).then((circleObservable) => {
       circleObservable.subscribe({
         next: (data) => {
-          this.localListToFilterComplainDetail=data.complainData
+          this.localListToFilterComplainDetail = data.complainData;
         },
         error: (err) => {
           console.error('Circle API error:', err);
@@ -210,9 +253,8 @@ export class PorFormListComponent implements OnInit {
     });
   }
 
-  on_fab_click(){
-
-          this.router.navigate(['menu/por-form']);  
+  on_fab_click() {
+    this.router.navigate(['menu/por-form']);
   }
   ngOnInit() {
     const storedUser = localStorage.getItem('user');
@@ -239,5 +281,27 @@ export class PorFormListComponent implements OnInit {
       // console.log('false');
       return false;
     }
+  }
+
+  @ViewChild(IonModal) modal!: IonModal;
+
+  message =
+    'This modal example uses triggers to automatically open a modal when the button is clicked.';
+  name!: string;
+
+  cancel() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirm() {
+    this.modal.dismiss(this.name, 'confirm');
+  }
+
+  dismissModal() {
+    this.modal.dismiss();
+  }
+
+  onWillDismiss(event: any) {
+    console.log('Modal dismissed', event);
   }
 }

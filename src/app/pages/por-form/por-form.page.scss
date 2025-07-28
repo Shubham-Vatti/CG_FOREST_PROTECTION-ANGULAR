@@ -19,7 +19,7 @@ form {
 }
 
 .custom-toolbar {
-  --background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  --background: linear-gradient(135deg, green, teal);
   --border-color: #e0e0e0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -55,23 +55,27 @@ form {
     font-size: 18px;
   }
 }
+.cdk-overlay-container {
+  z-index: 10000 !important;
+}
+
+div.mat-mdc-select-panel {
+  background-color: var(
+    --mat-select-panel-background-color=white,
+    var(--mat-sys-surface-container=red)
+  );
+}
 
 .ion-text-extra-small {
-  font-size: 12px; // Default mobile size
-
-  @media (min-width: 600px) {
-    font-size: 14px; // Tablet
-  }
-
-  @media (min-width: 1024px) {
-    font-size: 16px; // Desktop
-  }
+  font-size: 14px; // Default mobile size
+  font-weight: 600;
+  color: black;
 }
 
 .responsive-toolbar-title {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: white;
 }
 
 /* Medium screens (tablets) */
@@ -230,6 +234,7 @@ form {
 // Responsive design
 @media (max-width: 768px) {
   .location-card {
+    // margin-top: 100px;
     margin: 0 12px 20px 12px;
 
     .card-header {
@@ -309,22 +314,26 @@ form {
 }
 
 .custom-back-button {
-  color: black;
+  color: white;
 }
 
 .ion-label-large {
   font-size: 1.2rem;
+  text-transform: capitalize;
+  color: black;
 }
 
 @media (min-width: 600px) {
   .ion-label-large {
     font-size: 16px;
+    text-transform: capitalize;
   }
 }
 
 @media (min-width: 1024px) {
   .ion-label-large {
     font-size: 20px;
+    text-transform: capitalize;
   }
 }
 
@@ -380,15 +389,16 @@ form {
 
 // Date picker card styling
 .date-picker-card {
-  border-radius: 6px;
-  padding-bottom: 15px;
-  padding-top: 15px;
+  // border-radius: 6px;
+  // padding-bottom: 15px;
+  margin-top: 5px;
+  // padding-top: 15px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  gap: 5px;
+  // gap: 5px;
   transition: all 0.3s ease;
-  border: 1px solid #e0e0e0;
+  // border: 1px solid #e0e0e0;
 
   &:hover {
   }
@@ -407,6 +417,7 @@ form {
 ion-input.ion-valid {
   --highlight-color: blue; // green when valid
   --highlight-color-focused: blue;
+  // margin-top: 1%;
 }
 
 ion-textarea {
@@ -481,9 +492,9 @@ ion-textarea {
   }
 }
 
-ion-content {
-  --keyboard-offset: 250px; // optional tweak
-}
+// ion-content {
+//   --keyboard-offset: 250px; // optional tweak
+// }
 
 .spin-animation {
   animation: spin 1s linear infinite;
