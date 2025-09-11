@@ -1,0 +1,42 @@
+.controls {
+  margin-bottom: 20px;
+  
+  ion-button {
+    margin-bottom: 10px;
+  }
+}
+
+ion-chip {
+  margin: 10px 0;
+  --background: var(--ion-color-success);
+  --color: var(--ion-color-success-contrast);
+  
+  ion-icon {
+    animation: pulse 1.5s infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+ion-card {
+  margin: 16px 0;
+}
+
+ion-textarea {
+  min-height: 150px;
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}

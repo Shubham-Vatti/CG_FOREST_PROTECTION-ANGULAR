@@ -1,0 +1,67 @@
+<ion-content [fullscreen]="true" class="ion-text-center">
+  <ion-grid class="full-height">
+    <ion-row
+      class="ion-align-items-center ion-justify-content-center full-height"
+    >
+      <ion-col size-lg="4" size-sm="12" class="content-col">
+        <!-- Logo -->
+        <ion-img
+          src="../../../assets/icon/Logo.png"
+          class="logo"
+          alt="App Logo"
+        ></ion-img>
+
+        <!-- Titles -->
+        <p class="title1">{{ 'auth.Title1' | translate }}</p>
+        <p class="title2">{{ 'auth.Title2' | translate }}</p>
+
+        <!-- UID Input -->
+        <ion-input
+          label="{{ 'auth.UidTxt' | translate }}"
+          labelPlacement="floating"
+          fill="outline"
+          class="input-field"
+          [(ngModel)]="username"
+        >
+        </ion-input>
+
+        <!-- Password Input -->
+        <ion-input
+          label="{{ 'auth.PasswordTxt' | translate }}"
+          [attr.lang]="currentLang"
+          labelPlacement="floating"
+          fill="outline"
+          type="password"
+          class="input-field"
+          [(ngModel)]="password"
+        >
+          <!-- <ion-input-password-toggle slot="end"></ion-input-password-toggle> -->
+        </ion-input>
+
+        <!-- Language Switch -->
+        <ion-radio-group value="English" class="language-group">
+          <ion-radio
+            value="Hindi"
+            labelPlacement="end"
+            (click)="changeLanguage('hi')"
+          >
+            हिन्दी
+          </ion-radio>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <ion-radio
+            value="English"
+            labelPlacement="end"
+            (click)="changeLanguage('en')"
+          >
+            English
+          </ion-radio>
+        </ion-radio-group>
+
+        <!-- Login Button -->
+        <ion-button expand="block" class="login-btn" (click)="on_login()">
+          {{ 'auth.LoginBtnTxt' | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

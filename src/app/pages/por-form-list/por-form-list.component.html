@@ -1,0 +1,279 @@
+<ion-header [translucent]="true">
+  <ion-toolbar style="--background: linear-gradient(135deg, green, teal)">
+    <ion-buttons slot="start" style="color: white">
+      <ion-menu-button contextmenu="main-menu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title style="color: white">{{
+      "appbar.Title-POR" | translate
+    }}</ion-title>
+
+    <ion-img
+      src="assets/icon/Logo.png"
+      slot="end"
+      style="width: 40px; height: 40px; margin-right: 1rem"
+    />
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down"
+      refreshingSpinner="circles"
+      pullingText="Pull to refresh"
+      refreshingText="रिफ्रेश किया जा रहा है..."
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row *ngFor="let item of localListToFilterComplainDetail">
+      <ion-card class="enhanced-card">
+        <div class="card-header">
+          <div class="header-left">
+            <div class="por-badge">
+              <ion-icon
+                name="document-text-outline"
+                class="por-icon"
+              ></ion-icon>
+              <span class="por-text">{{ item.por_number || "N/A" }}</span>
+            </div>
+            <div
+              class="status-indicator"
+              [ngClass]="getStatusClass(item.stage_name)"
+            >
+              <ion-icon name="ellipse" class="status-icon"></ion-icon>
+              <span class="status-text">{{
+                item.stage_name || "Unknown"
+              }}</span>
+            </div>
+          </div>
+
+          <div class="header-right" *ngIf="item.isOffline">
+            <ion-button
+              class="sync-button"
+              fill="outline"
+              size="small"
+              (click)="SubmitOfflineData(item)"
+            >
+              <ion-icon name="sync" slot="start"></ion-icon>
+              Submit
+            </ion-button>
+          </div>
+        </div>
+
+        <ion-col size="12" class="card-content">
+          <ion-row>
+            <ion-col size="6" size-lg="6" class="info-section">
+              <ion-row>
+                <ion-col size="12">
+                  <div class="info-item">
+                    <ion-icon
+                      name="receipt-outline"
+                      class="field-icon"
+                    ></ion-icon>
+                    <div class="field-content">
+                      <ion-label class="ion-label-small">{{
+                        "PorFormScreen.Compartment" | translate
+                      }}</ion-label>
+                      <ion-label class="ion-label-large">{{
+                        item.compartment_number
+                      }}</ion-label>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col
+              size="6"
+              size-lg="6"
+              *ngIf="item.accused_name != ''"
+              class="info-section"
+            >
+              <ion-row>
+                <ion-col size="12">
+                  <div class="info-item">
+                    <ion-icon
+                      name="person-outline"
+                      class="field-icon"
+                    ></ion-icon>
+                    <div class="field-content">
+                      <ion-label class="ion-label-small">{{
+                        "PorFormScreen.AccussedName" | translate
+                      }}</ion-label>
+                      <ion-label class="ion-label-large">{{
+                        item.accused_name
+                      }}</ion-label>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col
+              size="6"
+              size-lg="6"
+              *ngIf="item.accused_fathers_name != ''"
+              class="info-section"
+            >
+              <ion-row>
+                <ion-col size="12">
+                  <div class="info-item">
+                    <ion-icon
+                      name="person-outline"
+                      class="field-icon"
+                    ></ion-icon>
+                    <div class="field-content">
+                      <ion-label class="ion-label-small">{{
+                        "PorFormScreen.FathersName" | translate
+                      }}</ion-label>
+                      <ion-label class="ion-label-large">{{
+                        item.accused_fathers_name
+                      }}</ion-label>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="6" size-lg="6" class="info-section">
+              <ion-row class="ion-align-items-center">
+                <ion-col size="12">
+                  <div class="info-item">
+                    <ion-icon
+                      name="time-outline"
+                      class="field-icon days-icon"
+                    ></ion-icon>
+                    <div class="field-content">
+                      <ion-label class="ion-label-small">{{
+                        "PorFormScreen.noofdayslefttxt" | translate
+                      }}</ion-label>
+                      <ion-label class="ion-label-large days-count">{{
+                        item.left_days_to_resolve_por
+                      }}</ion-label>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+
+          <!-- Action Buttons Section -->
+          <div class="action-section">
+            <div class="detail-button-container">
+              <ion-button
+                class="action-button"
+                fill="outline"
+                expand="block"
+                (click)="detailOrAcceptOrReject(item)"
+              >
+                <ion-icon name="eye-outline" slot="start"></ion-icon>
+                {{
+                  item.isOffline
+                    ? ("PorFormScreen.Edittxt" | translate)
+                    : ("PorFormScreen.detailstxt" | translate)
+                }}
+              </ion-button>
+            </div>
+
+            <div
+              class="action-button-container"
+              *ngIf="item.show_approve_reject_button != '0'"
+            >
+              <ion-button
+                class="action-button"
+                expand="block"
+                (click)="
+                  item.button_text == 'Assign RA'
+                    ? openModal(item)
+                    : navigateToRaWorkLog(item)
+                "
+              >
+                <ion-icon
+                  [name]="
+                    item.button_text == 'Assign RA'
+                      ? 'person-add-outline'
+                      : 'folder-open-outline'
+                  "
+                  slot="start"
+                ></ion-icon>
+                {{ item.button_text }}
+              </ion-button>
+            </div>
+          </div>
+        </ion-col>
+      </ion-card>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab
+    *ngIf="is_bg()"
+    horizontal="end"
+    vertical="bottom"
+    slot="fixed"
+    (click)="on_fab_click()"
+  >
+    <ion-fab-button color="primary" class="fab-button">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Update the modal to remove the trigger -->
+  <ion-modal #raOfficerModal>
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>रेंज असिस्टेंट चुनें</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="dismissModal()" color="danger"
+              >बंद करें</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-col
+          size="12"
+          style="justify-content: center; display: flex; align-items: center"
+        >
+          <mat-form-field
+            appearance="outline"
+            style="background-color: white; width: 90%; margin-top: 4%"
+          >
+            <mat-select [(ngModel)]="SelectedRa" placeholder="RA अधिकारी चुनें">
+              <mat-option *ngFor="let ra of listOfRA" [value]="ra">{{
+                ra.empName
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ion-col>
+        <ion-col
+          size="12"
+          size-md="8"
+          style="justify-content: center; display: flex; align-items: center"
+        >
+          <ion-textarea
+            [(ngModel)]="ro_remark"
+            fill="outline"
+            label="आर ए अधिकारी के लिए कुछ रिमार्क लिखना हो तो"
+            label-placement="floating"
+            auto-grow="true"
+            rows="5"
+            class="remark-textarea"
+            style="width: 90%; margin-top: 16px"
+          ></ion-textarea>
+        </ion-col>
+        <ion-row class="ion-justify-content-center ion-margin-top button-row">
+          <ion-col size="12" size-md="8">
+            <ion-button
+              expand="block"
+              color="primary"
+              (click)="clickToAssignRA()"
+            >
+              RA असाइन करें
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

@@ -1,0 +1,10 @@
+{
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "@ionic/angular/common",
+    "@ionic/angular"
+  ],
+  "editor.fontSize": 12,
+  "editor.formatOnSave": true,
+  "editor.wordWrap": "off",
+  "notebook.formatOnSave.enabled": true
+}

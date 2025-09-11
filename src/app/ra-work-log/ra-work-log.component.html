@@ -1,0 +1,145 @@
+<ion-header class="ion-header-toolbar">
+  <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start" style="color: white">
+      <ion-button fill="clear" (click)="goBack()" class="custom-back-button">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title" style="color: white">
+      work log
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="work-log-content">
+  <ion-loading
+    cssClass="custom-loading"
+    [isOpen]="isLoading"
+    [message]="loadingMessage"
+  ></ion-loading>
+
+  <div class="content-container">
+    <!-- Date Selection Card -->
+    <div class="form-card">
+      <div class="card-header">
+        <ion-icon name="calendar-outline" class="header-icon"></ion-icon>
+        <h3 class="card-title">कार्य लॉग दिनांक</h3>
+      </div>
+
+      <div class="date-picker-section" (click)="selectWorkLogDate()">
+        <div class="date-display">
+          <ion-icon name="calendar" class="date-icon"></ion-icon>
+          <span class="date-text">
+            {{
+              workLogDate ? (workLogDate | date : "dd-MM-yyyy") : "दिनांक चुनें"
+            }}
+          </span>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Address Input Card -->
+    <div class="form-card">
+      <div class="card-header">
+        <ion-icon name="location-outline" class="header-icon"></ion-icon>
+        <h3 class="card-title">पता (मुकाम)</h3>
+      </div>
+
+      <div class="input-section">
+        <ion-textarea
+          [(ngModel)]="address"
+          class="custom-textarea"
+          placeholder="अपना पता यहाँ लिखें..."
+          rows="3"
+        ></ion-textarea>
+      </div>
+    </div>
+
+    <!-- Work Log Input Card -->
+    <div class="form-card">
+      <div class="card-header">
+        <ion-icon name="document-text-outline" class="header-icon"></ion-icon>
+        <h3 class="card-title">कार्य लॉग</h3>
+      </div>
+
+      <div class="input-section">
+        <ion-textarea
+          [(ngModel)]="workLogText"
+          class="custom-textarea large"
+          placeholder="आप अपना कार्य लॉग यहाँ डालिये या फिर आप बोल करके भी कार्य लॉग कर सकते है"
+          rows="8"
+        ></ion-textarea>
+      </div>
+    </div>
+
+    <!-- Voice and Camera Controls -->
+    <div class="controls-card">
+      <!-- Voice Recording -->
+      <div class="control-item">
+        <div class="control-info">
+          <ion-icon name="mic-outline" class="control-icon"></ion-icon>
+          <div class="control-text">
+            <h4>वॉयस रिकॉर्डिंग</h4>
+            <p>कार्य लॉग करने के लिए माइक आइकॉन को क्लिक करें</p>
+          </div>
+        </div>
+        <ion-button
+          class="control-button mic-button"
+          [ngClass]="isListening ? 'active' : 'inactive'"
+          (click)="startListeningNew()"
+        >
+          <ion-icon name="mic" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+
+      <!-- Camera -->
+      <div class="control-item">
+        <div class="control-info">
+          <ion-icon name="camera-outline" class="control-icon"></ion-icon>
+          <div class="control-text">
+            <h4>फोटो लें</h4>
+            <p>अगर फोटो लेना है तो बटन पे क्लिक करें</p>
+          </div>
+        </div>
+        <ion-button class="control-button camera-button" (click)="takePic()">
+          <ion-icon name="camera" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Photos Display -->
+    <div class="photos-card" *ngIf="photos && photos.length > 0">
+      <div class="card-header">
+        <ion-icon name="images-outline" class="header-icon"></ion-icon>
+        <h3 class="card-title">अपलोड की गई फोटो ({{ photos.length }})</h3>
+      </div>
+
+      <div class="photos-grid">
+        <div class="photo-item" *ngFor="let photo of photos; let i = index">
+          <img [src]="photo" class="photo-image" alt="Work log photo" />
+          <button class="remove-photo-btn" (click)="removePhoto(i)">
+            <ion-icon name="close" class="remove-icon"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <ion-button
+        expand="block"
+        class="submit-button"
+        (click)="submitWorkLog('0')"
+      >
+        <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+        SUBMIT
+      </ion-button>
+
+      <ion-button expand="block" (click)="cancel()" class="cancel-button">
+        <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+        CANCEL
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

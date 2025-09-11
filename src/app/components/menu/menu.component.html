@@ -1,0 +1,79 @@
+<ion-app>
+  <ion-menu content-id="main-content" menu-id="main-menu">
+    <ion-header class="ion-header-class-for-menu">
+      <ion-item lines="none" class="center-header-item">
+        <ion-avatar slot="start">
+          <img src="../../../assets/icon/Logo.png" />
+        </ion-avatar>
+        <ion-label class="ion-label">
+          <!-- aaa -->
+          {{ officerName }}
+          <p class="p">
+            <ion-text
+              >(
+              {{ officerPost }}
+              )
+
+              <!-- ({{ getTranslation('state_name')}}) -->
+            </ion-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+          <ion-item
+            (click)="onMenuClick(p.url)"
+            routerDirection="root"
+            class="pressable-item"
+            button
+            style="--background-hover: green; --background-activated: #e0e0e0"
+          >
+            <ion-icon [name]="p.icon" slot="start"></ion-icon>
+            <ion-label>{{ p.title }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+
+    <!-- Beautified Logout Button Section -->
+    <ion-footer class="logout-footer">
+      <ion-item
+        routerDirection="root"
+        class="logout-item pressable-item"
+        button
+        lines="none"
+        style="
+          --background-hover: rgba(255, 0, 0, 0.1);
+          --background-activated: rgba(255, 0, 0, 0.2);
+          --border-radius: 8px;
+          margin: 12px;
+          --padding-start: 16px;
+          --padding-end: 16px;
+          --min-height: 48px;
+        "
+      >
+        <ion-icon
+          name="exit-outline"
+          slot="start"
+          style="color: #dc3545; font-size: 20px; margin-right: 12px"
+        ></ion-icon>
+        <ion-label
+          (click)="onLogout()"
+          style="
+            color: #dc3545;
+            font-weight: 500;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+          "
+        >
+          Logout
+        </ion-label>
+      </ion-item>
+    </ion-footer>
+  </ion-menu>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+</ion-app>

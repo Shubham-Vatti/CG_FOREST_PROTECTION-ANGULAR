@@ -1,0 +1,393 @@
+<ion-header class="ion-header-toolbar">
+  <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start" style="color: white">
+      <ion-button fill="clear" (click)="goBack()" class="custom-back-button">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title" style="color: white">
+      {{ 'appbar.Title-POR' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="enhanced-content">
+  <ion-loading [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+
+  <div class="content-wrapper">
+    <!-- Location Information Card -->
+    <div class="info-card location-card">
+      <div class="card-header">
+        <ion-icon name="location" class="header-icon"></ion-icon>
+        <h2 class="card-title-text">
+          {{ "PorFormScreen.googleLocation" | translate }}
+        </h2>
+      </div>
+
+      <div class="location-grid">
+        <div class="coordinate-item">
+          <div class="coordinate-label">
+            {{ "PorFormScreen.lat" | translate }}
+          </div>
+          <div class="coordinate-value">{{ lat }}</div>
+        </div>
+        <div class="coordinate-item">
+          <div class="coordinate-label">
+            {{ "PorFormScreen.lng" | translate }}
+          </div>
+          <div class="coordinate-value">{{ lon }}</div>
+        </div>
+      </div>
+
+      <div class="address-section">
+        <div class="address-text">{{ complain_location_google_addres }}</div>
+        <ion-button
+          class="map-button"
+          fill="solid"
+          expand="block"
+          color="success"
+          shape="round"
+          (click)="openMap()"
+        >
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          {{ "PorFormScreen.MaplocationTxt" | translate }}
+        </ion-button>
+      </div>
+
+      <div class="image-section" *ngIf="imgurl">
+        <ion-img
+          [src]="'https://forest.cg.gov.in/FOREST_COMPLAIN/uploads/' + imgurl"
+          class="location-image"
+        ></ion-img>
+      </div>
+    </div>
+
+    <!-- Personal Information Card -->
+    <div class="info-card personal-info-card">
+      <div class="card-header">
+        <ion-icon name="person" class="header-icon"></ion-icon>
+        <h2 class="card-title-text">
+          {{ 'PorFormScreen.personalinformationtxt' | translate }}
+        </h2>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">{{ 'PorFormScreen.porno' | translate }}</div>
+          <div class="info-value">{{ porno }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            {{ 'PorFormScreen.Compartment' | translate }}
+          </div>
+          <div class="info-value">{{ compartmentNumber }}</div>
+        </div>
+        <div class="info-item full-width" *ngIf="accussedName!=''">
+          <div class="info-label">
+            {{ 'PorFormScreen.AccussedName' | translate }}
+          </div>
+          <div class="info-value">{{ accussedName }}</div>
+        </div>
+        <div class="info-item full-width" *ngIf="accussedFatherName!=''">
+          <div class="info-label">
+            {{ 'PorFormScreen.FathersName' | translate }}
+          </div>
+          <div class="info-value">{{ accussedFatherName }}</div>
+        </div>
+        <div class="info-item full-width" *ngIf="accussedCast!=''">
+          <div class="info-label">
+            {{ 'PorFormScreen.CasteTxt' | translate }}
+          </div>
+          <div class="info-value">{{ accussedCast }}</div>
+        </div>
+        <div class="info-item full-width" *ngIf="address!=''">
+          <div class="info-label">
+            {{ 'PorFormScreen.AddressTxt' | translate }}
+          </div>
+          <div class="info-value">{{ address }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Crime Information Card -->
+    <div class="info-card crime-info-card">
+      <div class="card-header">
+        <ion-icon name="warning" class="header-icon"></ion-icon>
+        <h2 class="card-title-text">
+          {{ 'PorFormScreen.crimehead' | translate }}
+        </h2>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item full-width">
+          <div class="info-label">
+            {{ 'PorFormScreen.TypeOfCrimeAndLeagleAcctionTXT' | translate }}
+          </div>
+          <div class="info-value">{{ crimType }}</div>
+        </div>
+        <div class="info-item full-width">
+          <div class="info-label">
+            {{ 'PorFormScreen.DateOCrime' | translate }}
+          </div>
+          <div class="info-value">{{ crimeDate }}</div>
+        </div>
+        <div class="info-item full-width">
+          <div class="info-label">
+            {{ 'PorFormScreen.DetailOfSeizedNdActions' | translate }}
+          </div>
+          <div class="info-value">{{ seizedGoodDetail }}</div>
+        </div>
+        <div class="info-item full-width">
+          <div class="info-label">
+            {{ 'PorFormScreen.CrimePlaceTxt' | translate }}
+          </div>
+          <div class="info-value">{{ crimePlace }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seized Items Card -->
+    <div
+      class="info-card seized-items-card"
+      *ngIf="japtSamanList && japtSamanList.length > 0"
+    >
+      <div class="card-header">
+        <ion-icon name="archive" class="header-icon"></ion-icon>
+        <h2 class="card-title-text">जप्त सामान विवरण</h2>
+      </div>
+
+      <div class="seized-items-container">
+        <div
+          class="seized-item"
+          *ngFor="let item of japtSamanList; let i = index"
+        >
+          <div class="item-header">
+            <span class="item-number">{{ i + 1 }}</span>
+          </div>
+
+          <div class="item-details">
+            <div
+              class="detail-row"
+              *ngIf="item.jabti_saman_type !== null && item.jabti_saman_type !== undefined"
+            >
+              <span class="detail-label"
+                >{{ 'PorFormScreen.JaptiTxt' | translate }}</span
+              >
+              <span class="detail-value"
+                >{{
+                item.jabti_saman_type==1?'ठूंठ':item.jabti_saman_type==2?'काष्ठ':'अन्य'
+                }}</span
+              >
+            </div>
+
+            <div
+              class="detail-row"
+              *ngIf="item.prajati_name !== null && item.prajati_name !== undefined && item.prajati_name !== ''"
+            >
+              <span class="detail-label"
+                >{{ 'PorFormScreen.PrajatiTxt' | translate }}</span
+              >
+              <span class="detail-value">{{ item.prajati_name }}</span>
+            </div>
+
+            <div
+              class="detail-row"
+              *ngIf="item.lambai !== null && item.lambai !== undefined && item.lambai !== ''"
+            >
+              <span class="detail-label"
+                >{{ 'PorFormScreen.LambaiTxt' | translate }}</span
+              >
+              <span class="detail-value">{{ item.lambai }}</span>
+            </div>
+
+            <div
+              class="detail-row"
+              *ngIf="item.golai !== null && item.golai !== undefined && item.golai !== ''"
+            >
+              <span class="detail-label"
+                >{{ 'PorFormScreen.GolaiTxt' | translate }}</span
+              >
+              <span class="detail-value">{{ item.golai }}</span>
+            </div>
+
+            <div
+              class="detail-row"
+              *ngIf="item.ghan_meter !== null && item.ghan_meter !== undefined && item.ghan_meter !== ''"
+            >
+              <span class="detail-label"
+                >{{ 'PorFormScreen.CubicMeterTxt' | translate }}</span
+              >
+              <span class="detail-value">{{ item.ghan_meter }}</span>
+            </div>
+
+            <div
+              class="detail-row"
+              *ngIf="item.nag !== null && item.nag !== undefined && item.nag !== ''"
+            >
+              <span class="detail-label"
+                >{{ 'PorFormScreen.Nagtxt' | translate }}</span
+              >
+              <span class="detail-value">{{ item.nag }}</span>
+            </div>
+
+            <div
+              class="detail-row"
+              *ngIf="item.if_other_then_detail !== null && item.if_other_then_detail !== undefined && item.if_other_then_detail !== ''"
+            >
+              <span class="detail-label"
+                >{{ 'PorFormScreen.OtherInformationTxt' | translate }}</span
+              >
+              <span class="detail-value">{{ item.if_other_then_detail }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Witness Information Card -->
+    <div class="info-card witness-info-card">
+      <div class="card-header">
+        <ion-icon name="people" class="header-icon"></ion-icon>
+        <h2 class="card-title-text">
+          {{ 'PorFormScreen.WitnessInfo' | translate }}
+        </h2>
+      </div>
+
+      <div class="witness-grid">
+        <div class="witness-item">
+          <div class="witness-header">
+            <ion-icon name="person-circle" class="witness-icon"></ion-icon>
+            <span class="witness-title">गवाह 1</span>
+          </div>
+          <div class="witness-details">
+            <div class="witness-info">
+              <span class="witness-label"
+                >{{ 'PorFormScreen.NameOWitness1' | translate }}</span
+              >
+              <span class="witness-value">{{ witness1 }}</span>
+            </div>
+            <div class="witness-info">
+              <span class="witness-label"
+                >{{ 'PorFormScreen.WitnessAddressTxt1' | translate }}</span
+              >
+              <span class="witness-value">{{ addressWitness1 }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="witness-item">
+          <div class="witness-header">
+            <ion-icon name="person-circle" class="witness-icon"></ion-icon>
+            <span class="witness-title">गवाह 2</span>
+          </div>
+          <div class="witness-details">
+            <div class="witness-info">
+              <span class="witness-label"
+                >{{ 'PorFormScreen.NameOWitness2' | translate }}</span
+              >
+              <span class="witness-value">{{ witness2 }}</span>
+            </div>
+            <div class="witness-info">
+              <span class="witness-label"
+                >{{ 'PorFormScreen.WitnessAddressTxt2' | translate }}</span
+              >
+              <span class="witness-value">{{ addressWitness2 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="info-card ra-worklog-card"
+      *ngIf="getRaWorkLogList && getRaWorkLogList.length > 0 && Officerdesignation=='RA' && Officerdesignation"
+    >
+      <div class="card-header">
+        <ion-icon name="clipboard" class="header-icon"></ion-icon>
+        <h2 class="card-title-text">रेंज असिस्टेंट कार्य लॉग</h2>
+      </div>
+
+      <div class="worklog-container">
+        <div
+          class="worklog-item"
+          *ngFor="let worklog of getRaWorkLogList; let i = index"
+          [style.animation-delay]="(i + 1) * 0.1 + 's'"
+        >
+          <div class="worklog-header">
+            <div class="worklog-date">
+              <ion-icon name="calendar" class="date-icon"></ion-icon>
+              {{ worklog.created_at }}
+            </div>
+            <div class="worklog-number">#{{ i + 1 }}</div>
+          </div>
+
+          <div class="worklog-content">
+            <div class="worklog-text" *ngIf="worklog.work_log_text">
+              {{ worklog.work_log_text }}
+            </div>
+
+            <div class="worklog-address" *ngIf="worklog.address">
+              <ion-icon name="location" class="location-icon"></ion-icon>
+              <span>{{ worklog.address }}</span>
+            </div>
+          </div>
+
+          <div class="worklog-image-container" *ngIf="worklog.log_pic">
+            <ion-img
+              [src]="'https://forest.cg.gov.in/FOREST_COMPLAIN/wwwroot/uploads/' + worklog.log_pic"
+              class="worklog-image"
+              (click)="showImageAlert('https://forest.cg.gov.in/FOREST_COMPLAIN/wwwroot/uploads/' + worklog.log_pic)"
+            >
+            </ion-img>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Work Log Message -->
+    <!-- <div
+      class="info-card ra-worklog-card"
+      *ngIf="(!getRaWorkLogList || getRaWorkLogList.length === 0) && !isLoading"
+    >
+      <div class="card-header">
+        <ion-icon name="clipboard" class="header-icon"></ion-icon>
+        <h2 class="card-title-text">रेंज असिस्टेंट कार्य लॉग</h2>
+      </div>
+
+      <div class="no-worklog">
+        <ion-icon name="document-text" class="no-data-icon"></ion-icon>
+        <p>कोई कार्य लॉग उपलब्ध नहीं है</p>
+      </div>
+    </div> -->
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+      <div class="pdf-button-container">
+        <ion-button class="pdf-button" expand="block" (click)="generatePDF()">
+          <ion-icon name="document-text" class="pdf-icon"></ion-icon>
+          PDF खोलें
+        </ion-button>
+      </div>
+
+      <!-- <div class="approval-buttons" *ngIf="is_pending">
+        <ion-button
+          expand="block"
+          (click)="approveOrReject('1')"
+          class="submit-button"
+        >
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+          स्वीकृत
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          (click)="approveOrReject('2')"
+          class="cancel-button"
+        >
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+          अस्वीकृत
+        </ion-button>
+      </div> -->
+    </div>
+  </div>
+</ion-content>

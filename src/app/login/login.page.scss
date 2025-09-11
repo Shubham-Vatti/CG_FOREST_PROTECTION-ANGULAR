@@ -1,0 +1,83 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align inputs in center */
+  width: 100%;
+  height: 100%;
+}
+.form-input {
+  width: 88%; /* Adjust input width */
+  --mat-sys-primary: rgb(0, 0, 0);
+}
+.login-btn {
+  color: white;
+  width: 88%;
+  height: 6%;
+}
+:root {
+  --ion-color-success: green;
+}
+.title1 {
+  color: rgb(0, 128, 0);
+  font-weight: 800;
+  font-size: larger;
+  margin: 0px;
+}
+.title2 {
+  color: black;
+  font-weight: 500;
+  margin: 0px;
+  margin-top: 2%;
+  margin-bottom: 4%;
+}
+:host {
+  --color-checked: green;
+}
+.full-height {
+  height: 100%;
+}
+
+.content-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bgicon {
+  width: 400%;
+  position: absolute;
+  z-index: -1; /* Ensure the background is behind other elements */
+  opacity: 0.1;
+  bottom: 0;
+  height: auto;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  width: 88%;
+  margin-bottom: 6%;
+  --highlight-color-focused: green;
+  text-align: start;
+}
+
+.language-group {
+  margin-bottom: 6%;
+}
+
+@media only screen and (min-width: 992px) {
+  .logo {
+    width: 140px;
+    margin-bottom: 20px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .logo {
+    width: 140px;
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,32 @@
+<div class="dialog-wrapper">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center ion-text-center">
+      <ion-col size="12" size-lg="12">
+        <ion-text class="responsive-label">
+          {{ server_message }}
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center ion-text-end">
+      <ion-col *ngIf="!getIsYesNO()" size="12">
+        <ion-text class="responsive-label" style="width: 100%; display: block; text-align: center;" (click)="yesClick()">
+          {{ yesOrOk }}
+        </ion-text>
+      </ion-col>
+
+      <ng-container *ngIf="getIsYesNO()">
+        <ion-col size="6">
+          <ion-text class="responsive-label" style="color: green; width: 100%; display: block; text-align: center;" (click)="yesClick()">
+            {{ yesOrOk }}
+          </ion-text>
+        </ion-col>
+        <ion-col size="6">
+          <ion-text class="responsive-label" style="color: red; width: 100%; display: block; text-align: center;" (click)="noClick()">
+            नहीं
+          </ion-text>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+</div>

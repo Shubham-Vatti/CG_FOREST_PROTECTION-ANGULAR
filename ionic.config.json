@@ -1,0 +1,7 @@
+{
+  "name": "CG_FOREST_PROTECTION",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

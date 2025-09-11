@@ -1,0 +1,444 @@
+/* Header Styles */
+.custom-toolbar {
+  --background: linear-gradient(135deg, green, teal);
+  --border-color: #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ion-header-toolbar {
+  // margin-top: 20px;
+
+  @media (min-width: 768px) {
+    margin-top: 40px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-top: 0px;
+  }
+}
+
+/* Content Layout */
+.work-log-content {
+  --background: #f8f9fa;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.content-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+  
+  @media (min-width: 768px) {
+    padding: 24px;
+  }
+  
+  @media (min-width: 1024px) {
+    padding: 32px 24px;
+  }
+}
+
+/* Card Styles */
+.form-card, .controls-card, .photos-card {
+  background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+  
+  @media (min-width: 768px) {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+}
+
+/* Card Headers */
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e9ecef;
+  
+  .header-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    color: #6c757d;
+    
+    @media (min-width: 768px) {
+      font-size: 22px;
+    }
+  }
+  
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0;
+    
+    @media (min-width: 768px) {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+/* Date Picker */
+.date-picker-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #dee2e6;
+  
+  &:hover {
+    background: #e9ecef;
+    border-color: #adb5bd;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.date-display {
+  display: flex;
+  align-items: center;
+  
+  .date-icon {
+    font-size: 18px;
+    margin-right: 10px;
+    color: #495057;
+  }
+  
+  .date-text {
+    font-size: 1rem;
+    color: #495057;
+    font-weight: 500;
+    
+    @media (min-width: 768px) {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.arrow-icon {
+  font-size: 16px;
+  color: #6c757d;
+}
+
+/* Input Styles */
+.input-section {
+  .custom-textarea {
+    --background: #ffffff;
+    --border-color: #dee2e6;
+    --border-radius: 8px;
+    --border-width: 1px;
+    --color: #495057;
+    --placeholder-color: #6c757d;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    
+    font-size: 1rem;
+    
+    &.large {
+      min-height: 120px;
+      
+      @media (min-width: 768px) {
+        min-height: 140px;
+      }
+    }
+    
+    &:focus-within {
+      --border-color: #0d6efd;
+      box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
+    }
+    
+    @media (min-width: 768px) {
+      font-size: 1.05rem;
+    }
+  }
+}
+
+/* Controls */
+.controls-card {
+  .control-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    
+    &:not(:last-child) {
+      border-bottom: 1px solid #e9ecef;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+    }
+    
+    @media (min-width: 768px) {
+      padding: 20px 0;
+      
+      &:not(:last-child) {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+      }
+    }
+  }
+}
+
+.control-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  
+  .control-icon {
+    font-size: 24px;
+    margin-right: 16px;
+    color: #6c757d;
+    
+    @media (min-width: 768px) {
+      font-size: 28px;
+      margin-right: 20px;
+    }
+  }
+  
+  .control-text {
+    h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #343a40;
+      margin: 0 0 4px 0;
+      
+      @media (min-width: 768px) {
+        font-size: 1.1rem;
+      }
+    }
+    
+    p {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin: 0;
+      line-height: 1.4;
+      
+      @media (min-width: 768px) {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+.control-button {
+  --border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  
+  @media (min-width: 768px) {
+    width: 52px;
+    height: 52px;
+  }
+  
+  ion-icon {
+    font-size: 20px;
+    
+    @media (min-width: 768px) {
+      font-size: 22px;
+    }
+  }
+  
+  &.mic-button {
+    &.active {
+      --background: #28a745;
+      --color: white;
+    }
+    
+    &.inactive {
+      --background: #dc3545;
+      --color: white;
+    }
+  }
+  
+  &.camera-button {
+    --background: #007bff;
+    --color: white;
+    
+    &:hover {
+      --background: #0056b3;
+    }
+  }
+}
+
+/* Photos Grid */
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+  }
+}
+
+.photo-item {
+  position: relative;
+  
+  .photo-image {
+    width: 100%;
+    object-fit: contain;
+    
+    @media (min-width: 768px) {
+      height: 140px;
+    }
+  }
+  
+  .remove-photo-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #ffffff;
+      transform: scale(1.1);
+    }
+    
+    .remove-icon {
+      font-size: 16px;
+      color: #dc3545;
+    }
+  }
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 32px;
+  
+  @media (min-width: 768px) {
+    gap: 20px;
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.submit-button {
+  --background: #28a745;
+  --background-activated: #218838;
+  --background-focused: #218838;
+  --color: #fff;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+  height: 48px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &:hover {
+    --background: #218838;
+    transform: translateY(-1px);
+    --box-shadow: 0 6px 16px rgba(40, 167, 69, 0.3);
+  }
+  
+  ion-icon {
+    margin-right: 8px;
+    font-size: 18px;
+  }
+  
+  @media (min-width: 768px) {
+    height: 52px;
+    font-size: 1rem;
+  }
+}
+
+.cancel-button {
+  --background: #6c757d;
+  --background-activated: #5a6268;
+  --background-focused: #5a6268;
+  --color: #fff;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(108, 117, 125, 0.2);
+  height: 48px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &:hover {
+    --background: #5a6268;
+    transform: translateY(-1px);
+    --box-shadow: 0 6px 16px rgba(108, 117, 125, 0.3);
+  }
+  
+  ion-icon {
+    margin-right: 8px;
+    font-size: 18px;
+  }
+  
+  @media (min-width: 768px) {
+    height: 52px;
+    font-size: 1rem;
+  }
+}
+
+/* Loading */
+.custom-loading {
+  --background: rgba(255, 255, 255, 0.95);
+  --spinner-color: #28a745;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .content-container {
+    padding: 12px;
+  }
+  
+  .form-card, .controls-card, .photos-card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .card-header {
+    margin-bottom: 12px;
+    
+    .header-icon {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+    
+    .card-title {
+      font-size: 1rem;
+    }
+  }
+  
+  .control-info .control-icon {
+    font-size: 22px;
+    margin-right: 12px;
+  }
+  
+  .control-button {
+    width: 44px;
+    height: 44px;
+    
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+}
